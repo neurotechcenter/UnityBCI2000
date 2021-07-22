@@ -1,0 +1,12 @@
+{
+	"name":"UnityBCI2000"
+	"version":"0.1.0"
+	"description":"Package which integrates BCI2000 with Unity"
+	"displayName":"BCI2000"
+	"unity":"2020.3"
+	"unityRelease":"12f1"
+	"keywords": [
+	"BCI2000",
+	"BCI"
+]
+}
