@@ -7,20 +7,21 @@ using BCI2000RemoteNET;
 using UnityEngine;
 
 
-public class BCI : MonoBehaviour
+public class UnityBCI2000 : MonoBehaviour
 {
 
     private BCI2000Remote bci;
+    public string OperatorPath;
+    public string TelnetIp;
+    public int TelnetPort;
+    public bool DontStartModules;
     public string Module1;
     public string[] Module1Args;
     public string Module2;
     public string[] Module2Args;
     public string Module3;
     public string[] Module3Args;
-    public Dictionary<string, List<string>> modules;
-    public string OperatorPath;
-    public string TelnetIp;
-    public int TelnetPort;
+    private Dictionary<string, List<string>> modules;
     public string LogFile;
     public bool LogStates;
     public bool LogPrompts;
@@ -85,12 +86,15 @@ public class BCI : MonoBehaviour
         else
             module3ArgsList = Module3Args.ToList();
 
-        bci.StartupModules(new Dictionary<string, List<string>>()
+        if (!DontStartModules)
         {
+            bci.StartupModules(new Dictionary<string, List<string>>()
+            {
             {Module1, module1ArgsList },
             {Module2, module2ArgsList },
             {Module3, module3ArgsList }
-        });
+            });
+        }
         bci.SetConfig();
         bci.Start();
     }
@@ -102,7 +106,12 @@ public class BCI : MonoBehaviour
 
     }
 
-    public void Stop()
+    public void StartRun()
+    {
+        bci.Start();
+    }
+
+    public void StopRun()
     {
         bci.Stop();
     }
