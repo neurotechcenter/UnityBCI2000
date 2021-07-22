@@ -10,7 +10,7 @@ using UnityEngine;
 public class UnityBCI2000 : MonoBehaviour
 {
 
-    private BCI2000Remote bci;
+    private BCI2000Remote bci = new BCI2000Remote();
     public string OperatorPath;
     public string TelnetIp;
     public int TelnetPort;
@@ -25,8 +25,9 @@ public class UnityBCI2000 : MonoBehaviour
     public string LogFile;
     public bool LogStates;
     public bool LogPrompts;
+    private bool afterFirst = false;
 
-    private List<StateVariable> states;
+    private List<StateVariable> states = new List<StateVariable>();
 
     public enum StateType //copy this to any object which sends states in Start(), don't want to be copying this every frame
     {
@@ -37,25 +38,30 @@ public class UnityBCI2000 : MonoBehaviour
         Boolean
     }
 
-    public void SetState(string name, int value, StateType defaultType) //Default type is the type to use if the state does not exist
+    public void SetState(string name, int value) //Default type is the type to use if the state does not exist
     {
         StateVariable state = states.Find(x => x.Name == name);
         if (state == null)
         {
-            state = new StateVariable(name, defaultType, bci);
-            states.Add(state);
-            state.Set(value);
+            Debug.Log("State " + name + " does not exist.");
+            return;
         }
-        else
+        state.Set(value);
+    }
+
+    public void AddState(string name, StateType type) //can only be called in Start()
+    {
+        if (states.Find(x => x.Name == name) != null)
         {
-            state.Set(value);
+            Debug.Log("State " + name + " already exists");
+            return;
         }
+        states.Add(new StateVariable(name, type, bci));
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        bci = new BCI2000Remote();
 
         bci.WindowVisible = 1;
         bci.OperatorPath = OperatorPath;
@@ -95,27 +101,35 @@ public class UnityBCI2000 : MonoBehaviour
             {Module3, module3ArgsList }
             });
         }
-        bci.SetConfig();
-        bci.Start();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!afterFirst) //Start and set config, so other scripts can add variables.
+        {
+
+            bci.SetConfig();
+            bci.Start();
+            afterFirst = true;
+        }
 
 
     }
-
+    /*
     public void StartRun()
     {
         bci.Start();
     }
+    
 
     public void StopRun()
     {
         bci.Stop();
     }
-
+    */
 
 
     private void OnDestroy()

@@ -58,9 +58,3 @@ Whether or not to log any Prompt, in which case only received output and errors 
 Methods
 ---
 UnityBCI2000 is designed for use without any scripting, but there are functions which can be used to control specific aspects of the program.
-
-`StartRun()`
-Starts a BCI2000 run.
-
-`StopRun()`
-Stops a BCI2000 run.
