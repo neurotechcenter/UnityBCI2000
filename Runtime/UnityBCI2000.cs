@@ -38,26 +38,21 @@ public class UnityBCI2000 : MonoBehaviour
         Boolean
     }
 
-    public void SetState(string name, int value) //Default type is the type to use if the state does not exist
+    public StateVariable FindState(string name)
     {
-        StateVariable state = states.Find(x => x.Name == name);
-        if (state == null)
-        {
-            Debug.Log("State " + name + " does not exist.");
-            return;
-        }
-        state.Set(value);
+        return states.Find(x => x.Name == name);
     }
 
-    public void AddState(string name, StateType type) //can only be called in Start()
+    public StateVariable AddState(string name, StateType type) //can only be called in Start()
     {
         if (states.Find(x => x.Name == name) != null)
         {
             Debug.Log("State " + name + " already exists");
-            return;
+            return null;
         }
-        states.Add(new StateVariable(name, type, bci));
-        Debug.Log("Adding new state");
+        StateVariable newState = new StateVariable(name, type, bci);
+        states.Add(newState);
+        return (newState);
     }
 
     // Start is called before the first frame update
@@ -165,7 +160,7 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
 
-    private class StateVariable
+    public class StateVariable
     {
         public string Name { get; }
         public StateType Type { get; } //bad naming, couldn't think of anything else
