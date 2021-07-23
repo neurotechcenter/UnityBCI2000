@@ -57,6 +57,7 @@ public class UnityBCI2000 : MonoBehaviour
             return;
         }
         states.Add(new StateVariable(name, type, bci));
+        Debug.Log("Adding new state");
     }
 
     // Start is called before the first frame update
@@ -111,6 +112,32 @@ public class UnityBCI2000 : MonoBehaviour
         if (!afterFirst) //Start and set config, so other scripts can add variables.
         {
 
+            foreach (StateVariable state in states) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
+            {
+                switch (state.Type)
+                {
+                    case StateType.Boolean:
+                        bci.AddStateVariable(state.Name, 1, 0);
+                        Debug.Log("Adding bool");
+                        break;
+                    case StateType.UnsignedInt32:
+                        bci.AddStateVariable(state.Name, 32, 0);
+                        Debug.Log("Adding uint32");
+                        break;
+                    case StateType.SignedInt32:
+                        bci.AddStateVariable(state.Name, 32, 0);
+                        bci.AddStateVariable(state.Name + "Sign", 1, 0);
+                        break;
+                    case StateType.UnsignedInt16:
+                        bci.AddStateVariable(state.Name, 16, 0);
+                        break;
+                    case StateType.SignedInt16:
+                        bci.AddStateVariable(state.Name, 16, 0);
+                        bci.AddStateVariable(state.Name + "Sign", 1, 0);
+                        break;
+                }
+            }
+
             bci.SetConfig();
             bci.Start();
             afterFirst = true;
@@ -141,33 +168,14 @@ public class UnityBCI2000 : MonoBehaviour
     private class StateVariable
     {
         public string Name { get; }
-        public StateType Type { get; }
+        public StateType Type { get; } //bad naming, couldn't think of anything else
         private readonly BCI2000Remote bci;
         public StateVariable(string name, StateType type, BCI2000Remote inBci)
         {
             Name = name;
             bci = inBci;
             Type = type;
-            switch (Type)
-            {
-                case StateType.Boolean:
-                    bci.AddStateVariable(Name, 1, 0);
-                    break;
-                case StateType.UnsignedInt32:
-                    bci.AddStateVariable(Name, 32, 0);
-                    break;
-                case StateType.SignedInt32:
-                    bci.AddStateVariable(Name, 32, 0);
-                    bci.AddStateVariable(Name + "Sign", 1, 0);
-                    break;
-                case StateType.UnsignedInt16:
-                    bci.AddStateVariable(Name, 16, 0);
-                    break;
-                case StateType.SignedInt16:
-                    bci.AddStateVariable(Name, 16, 0);
-                    bci.AddStateVariable(Name + "Sign", 1, 0);
-                    break;
-            }
+
         }
 
         public void Set(int value)
@@ -184,7 +192,7 @@ public class UnityBCI2000 : MonoBehaviour
                 case StateType.SignedInt32:
                     bci.SetStateVariable(Name, Mathf.Abs(value));
                     if (value < 0)
-                        bci.SetStateVariable(Name, 1);
+                        bci.SetStateVariable(Name + "Sign", 1);
                     else
                         bci.SetStateVariable(Name + "Sign", 0);
                     break;
