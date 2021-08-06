@@ -59,6 +59,19 @@ Methods
 ---
 UnityBCI2000 is designed for use without any scripting, but there are functions which can be used to control specific aspects of the program.
 
-
+UnityBCI2000
 `AddStateVariable(string name, StateType type)`
 Adds a state variable to `UnityBCI2000`. 
+
+
+BCI2000StateSender
+`AddSendStateVariable`
+
+
+Other Notes
+---
+`StateVariable` is a class which holds values necessary for sending states to BCI2000.
+They are stored in two places, a central list within `UnityBCI2000` which is only used for checking if a state already exists,
+and within the `BCI2000StateSender` which 'owns' the state, where they are stored within objects called `SendStateVariable`,
+which update the state with a new value every frame. This is done so that one state can be changed by mutiple `BCI2000StateSender`s,
+through the use of multiple `SendStateVariables` created using the `AddSendExistingState()` method. 
