@@ -1,4 +1,3 @@
-using System.Collections;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -6,26 +5,23 @@ using UnityEngine;
 using UnityEditor;
 
 
-[System.Serializable]
+
 public class BCI2000StateSender : MonoBehaviour
 {
-    enum format
-    {
-        none,
-        x1000,
-    }
 
-    public GameObject BCIObject;
+
+    [SerializeField] private GameObject BCIObject;
+
     private UnityBCI2000 bci;
 
 
     [SerializeField] bool GlobalCoords;
     [SerializeField] bool GlobalX;
-    [SerializeField] format GXForm = format.x1000;
+    [SerializeField] int GXScale = 1000;
     [SerializeField] bool GlobalY;
-    [SerializeField] format GYForm = format.x1000;
+    [SerializeField] int GYScale = 1000;
     [SerializeField] bool GlobalZ;
-    [SerializeField] format GZForm = format.x1000;
+    [SerializeField] int GZScale = 1000;
 
 
     [SerializeField] bool ScreenPosition;
@@ -33,16 +29,16 @@ public class BCI2000StateSender : MonoBehaviour
     [SerializeField] Camera screenCamera;
 
     [SerializeField] bool ScreenX;
-    [SerializeField] format SXForm = format.x1000;
+    [SerializeField] int SXScale = 1;
     [SerializeField] bool ScreenY;
-    [SerializeField] format SYForm = format.x1000;
+    [SerializeField] int SYScale = 1;
     [SerializeField] bool ScreenZ;
-    [SerializeField] format SZForm = format.x1000;
+    [SerializeField] int SZScale = 1;
 
     [SerializeField] bool IsOnScreen;
     [SerializeField] bool Interaction;
     [SerializeField] bool Velocity = false;
-    [SerializeField] format VelForm = format.none;
+    [SerializeField] int VelScale = 1;
 
 
     private List<SendState> variables = new List<SendState>();
@@ -56,27 +52,27 @@ public class BCI2000StateSender : MonoBehaviour
 
         if (GlobalX)
         {
-            AddSendState("GlobalX", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => gameObject.transform.position.x), 1000);
+            AddSendState("GlobalX", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => gameObject.transform.position.x), GXScale);
         }
         if (GlobalY)
         {
-            AddSendState("GlobalY", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => gameObject.transform.position.y), 1000);
+            AddSendState("GlobalY", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => gameObject.transform.position.y), GYScale);
         }
         if (GlobalZ)
         {
-            AddSendState("GlobalZ", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => gameObject.transform.position.z), 1000);
+            AddSendState("GlobalZ", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => gameObject.transform.position.z), GZScale);
         }
         if (ScreenX)
         {
-            AddSendState("ScreenX", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => screenCamera.WorldToScreenPoint(gameObject.transform.position).x));
+            AddSendState("ScreenX", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => screenCamera.WorldToScreenPoint(gameObject.transform.position).x), SXScale);
         }
         if (ScreenY)
         {
-            AddSendState("ScreenY", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => screenCamera.WorldToScreenPoint(gameObject.transform.position).y));
+            AddSendState("ScreenY", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => screenCamera.WorldToScreenPoint(gameObject.transform.position).y), SYScale);
         }
         if (ScreenZ)
         {
-            AddSendState("ScreenZ", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => screenCamera.WorldToScreenPoint(gameObject.transform.position).z));
+            AddSendState("ScreenZ", UnityBCI2000.StateType.SignedInt32, new Func<float>(() => screenCamera.WorldToScreenPoint(gameObject.transform.position).z), SZScale);
         }
         if (Velocity)
         {
@@ -84,11 +80,11 @@ public class BCI2000StateSender : MonoBehaviour
             if (rigidbody == null) //there is no rigidbody, so there must be a rigidbody2d
             {
                 Rigidbody2D rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody2D.velocity.magnitude));
+                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody2D.velocity.magnitude), VelScale);
             }
             else
             {
-                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude));
+                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude), VelScale);
             }
         }
     }
@@ -108,7 +104,7 @@ public class BCI2000StateSender : MonoBehaviour
 
         string nameNoWS = new string(gameObject.name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
         UnityBCI2000.StateVariable state = bci.AddState(nameNoWS + name, type);
-        variables.Add(new SendState(state, value, 1000));
+        variables.Add(new SendState(state, value, scale));
     }
     public void AddSendState(string name, UnityBCI2000.StateType type, Func<float> value)
     {
@@ -153,43 +149,43 @@ public class BCI2000StateSender : MonoBehaviour
             sender.screenCamera = (Camera)EditorGUILayout.ObjectField("Camera", sender.screenCamera, typeof(Camera), true);
 
 
-            //Global coordinate toggles and formats
-            sender.GlobalCoords = EditorGUILayout.Toggle("Global Coordinates", sender.GlobalCoords);
+            //Global coordinate toggles and scales
+            sender.GlobalCoords = EditorGUILayout.Foldout(sender.GlobalCoords, "Global Coordinates", true);
             if (sender.GlobalCoords)
             {
                 sender.GlobalX = EditorGUILayout.Toggle("Global X Position", sender.GlobalX);
                 if (sender.GlobalX)
-                    sender.GXForm = (format)EditorGUILayout.EnumPopup("Global X Position Format", sender.GXForm);
+                    sender.GXScale = EditorGUILayout.IntField("Scale", sender.GXScale);
                 sender.GlobalY = EditorGUILayout.Toggle("Global Y Position", sender.GlobalY);
                 if (sender.GlobalY)
-                    sender.GYForm = (format)EditorGUILayout.EnumPopup("Global Y Position Format", sender.GYForm);
+                    sender.GYScale = EditorGUILayout.IntField("Scale", sender.GYScale);
                 sender.GlobalZ = EditorGUILayout.Toggle("Global Z Position", sender.GlobalZ);
                 if (sender.GlobalZ)
-                    sender.GZForm = (format)EditorGUILayout.EnumPopup("Global Z Position Format", sender.GZForm);
+                    sender.GZScale = EditorGUILayout.IntField("Scale", sender.GZScale);
             }
             //Screen coordinate toggles and formats
-            sender.ScreenPosition = EditorGUILayout.Toggle("Screen Position", sender.ScreenPosition);
+            sender.ScreenPosition = EditorGUILayout.Foldout(sender.ScreenPosition, "Screen Position", true);
             if (sender.ScreenPosition)
             {
                 sender.ScreenX = EditorGUILayout.Toggle("Screen X Position", sender.ScreenX);
                 if (sender.ScreenX)
-                    sender.SXForm = (format)EditorGUILayout.EnumPopup("Screen X Position Format", sender.SXForm);
+                    sender.SXScale = EditorGUILayout.IntField("Scale", sender.SXScale);
                 sender.ScreenY = EditorGUILayout.Toggle("Screen Y Position", sender.ScreenY);
                 if (sender.ScreenY)
-                    sender.SYForm = (format)EditorGUILayout.EnumPopup("Screen Y Position Format", sender.SYForm);
+                    sender.SYScale = EditorGUILayout.IntField("Scale", sender.SYScale);
                 sender.ScreenZ = EditorGUILayout.Toggle("Screen Z Position", sender.ScreenZ);
                 if (sender.ScreenZ)
-                    sender.SZForm = (format)EditorGUILayout.EnumPopup("Screen Z Position Format", sender.SZForm);
+                    sender.SZScale = EditorGUILayout.IntField("Scale", sender.SZScale);
 
             }
             sender.IsOnScreen = EditorGUILayout.Toggle("Is on screen", sender.IsOnScreen);
 
             //check for rigidbody before showing velocity toggle
-            if (sender.gameObject.GetComponent<Rigidbody>() != null && sender.gameObject.GetComponent<Rigidbody2D>() != null)
+            if (sender.gameObject.GetComponent<Rigidbody>() != null || sender.gameObject.GetComponent<Rigidbody2D>() != null)
             {
                 sender.Velocity = EditorGUILayout.Toggle("Velocity", sender.Velocity);
                 if (sender.Velocity)
-                    sender.VelForm = (format)EditorGUILayout.EnumPopup("Velocity format", sender.VelForm);
+                    sender.VelScale = EditorGUILayout.IntField("Scale", sender.VelScale);
             }
             serializedObject.ApplyModifiedProperties();
         }
