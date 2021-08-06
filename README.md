@@ -59,6 +59,18 @@ Methods
 ---
 UnityBCI2000 is designed for use without any scripting, but there are functions which can be used to control specific aspects of the program.
 
+<<<<<<< Updated upstream
+=======
+UnityBCI2000
+`AddStateVariable(string name, StateType type)`
+Adds a state variable to `UnityBCI2000`. 
+
+
+BCI2000StateSender
+`AddCustomVariable()`
+Adds a custom variable to the Sender. This is the only method that you need to call in order to add custom variables.
+
+>>>>>>> Stashed changes
 
 `AddStateVariable(string name, StateType type)`
 Adds a state variable to `UnityBCI2000`. 

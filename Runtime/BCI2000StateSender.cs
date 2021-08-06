@@ -47,6 +47,10 @@ public class BCI2000StateSender : MonoBehaviour
 
     private List<SendState> variables = new List<SendState>();
 
+    [SerializeField] private bool showCustomVars;
+    //serialized list of custom variables, so they can be held outside of play mode.
+    [SerializeField] private List<(string, Func<float>, int, UnityBCI2000.StateType)> customVariables = new List<(string, Func<float>, int, UnityBCI2000.StateType)>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -91,6 +95,14 @@ public class BCI2000StateSender : MonoBehaviour
                 AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude));
             }
         }
+
+        foreach ((string, Func<float>, int, UnityBCI2000.StateType) customVar in customVariables) //adds all the custom variables from the list
+        {
+            if (bci.FindState("name") == null)
+                AddSendState(customVar.Item1, customVar.Item4, customVar.Item2, customVar.Item3);
+            else
+                AddSendExistingState(customVar.Item1, customVar.Item2, customVar.Item3);
+        }
     }
 
     // Update is called once per frame
@@ -103,20 +115,17 @@ public class BCI2000StateSender : MonoBehaviour
     }
 
 
-    public void AddSendState(string name, UnityBCI2000.StateType type, Func<float> value, int scale)
+    private void AddSendState(string name, UnityBCI2000.StateType type, Func<float> value, int scale)
     {
 
         string nameNoWS = new string(gameObject.name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
         UnityBCI2000.StateVariable state = bci.AddState(nameNoWS + name, type);
         variables.Add(new SendState(state, value, 1000));
     }
-    public void AddSendState(string name, UnityBCI2000.StateType type, Func<float> value)
-    {
-        AddSendState(name, type, value, 1);
-    }
 
 
-    public void AddSendExistingState(string name, Func<float> value, int scale)
+
+    private void AddSendExistingState(string name, Func<float> value, int scale)
     {
         UnityBCI2000.StateVariable state = bci.FindState(name);
         if (state == null)
@@ -126,19 +135,24 @@ public class BCI2000StateSender : MonoBehaviour
         }
         variables.Add(new SendState(state, value, scale));
     }
-    public void AddSendExistingState(string name, Func<float> value)
-    {
-        AddSendExistingState(name, value, 1);
-    }
 
-    public void AddSendExistingState(UnityBCI2000.StateVariable state, Func<float> value, int scale)
+
+    private void AddSendExistingState(UnityBCI2000.StateVariable state, Func<float> value, int scale)
     {
         variables.Add(new SendState(state, value, scale));
     }
-    public void AddSendExistingState(UnityBCI2000.StateVariable state, Func<float> value)
+
+
+
+    public void AddCustomVariable(string name, Func<float> value, int scale, UnityBCI2000.StateType type)
     {
-        AddSendExistingState(state, value, 1);
+        customVariables.Add((name, value, scale, type));
     }
+    public void AddCustomVariable(string name, Func<float> value, UnityBCI2000.StateType type)
+    {
+        AddCustomVariable(name, value, 1, type);
+    }
+
 
 
     [CustomEditor(typeof(BCI2000StateSender))]
@@ -184,12 +198,24 @@ public class BCI2000StateSender : MonoBehaviour
             }
             sender.IsOnScreen = EditorGUILayout.Toggle("Is on screen", sender.IsOnScreen);
 
+
             //check for rigidbody before showing velocity toggle
             if (sender.gameObject.GetComponent<Rigidbody>() != null && sender.gameObject.GetComponent<Rigidbody2D>() != null)
             {
                 sender.Velocity = EditorGUILayout.Toggle("Velocity", sender.Velocity);
                 if (sender.Velocity)
                     sender.VelForm = (format)EditorGUILayout.EnumPopup("Velocity format", sender.VelForm);
+            }
+            sender.showCustomVars = EditorGUILayout.Foldout(sender.showCustomVars, "Custom Variables");
+            if (sender.showCustomVars)
+            {
+                for (int ii = 0; ii < sender.customVariables.Count; ii++)
+                {
+                    (string, Func<float>, int, UnityBCI2000.StateType) customVar = sender.customVariables[ii];
+                    EditorGUILayout.LabelField(customVar.Item1);
+                    int scale = EditorGUILayout.IntField(customVar.Item3);
+                    sender.customVariables[ii] = (customVar.Item1, customVar.Item2, scale, customVar.Item4); //changes scale
+                }
             }
             serializedObject.ApplyModifiedProperties();
         }
@@ -202,6 +228,7 @@ public class BCI2000StateSender : MonoBehaviour
     {
         public string Name { get; }
         public int Scale { get; }
+
         public Func<float> StoredVar { get; }
         private UnityBCI2000.StateVariable state;
 
