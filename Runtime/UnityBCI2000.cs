@@ -165,6 +165,8 @@ public class UnityBCI2000 : MonoBehaviour
         public string Name { get; }
         public StateType Type { get; } //bad naming, couldn't think of anything else
         private readonly BCI2000Remote bci;
+
+        private int lastSentValue;
         public StateVariable(string name, StateType type, BCI2000Remote inBci)
         {
             Name = name;
@@ -175,26 +177,30 @@ public class UnityBCI2000 : MonoBehaviour
 
         public void Set(int value)
         {
-            switch (Type)
+            if (value != lastSentValue) //check if the new value is different than the last sent value, to avoid unneccessary calls to bci2k
             {
-                case StateType.Boolean:
-                    if (value == 0)
-                        bci.SetStateVariable(Name, 0);
-                    else
-                        bci.SetStateVariable(Name, 1);
-                    break;
-                case StateType.SignedInt16:
-                case StateType.SignedInt32:
-                    bci.SetStateVariable(Name, Mathf.Abs(value));
-                    if (value < 0)
-                        bci.SetStateVariable(Name + "Sign", 1);
-                    else
-                        bci.SetStateVariable(Name + "Sign", 0);
-                    break;
-                case StateType.UnsignedInt16:
-                case StateType.UnsignedInt32:
-                    bci.SetStateVariable(Name, value);
-                    break;
+                lastSentValue = value;
+                switch (Type)
+                {
+                    case StateType.Boolean:
+                        if (value == 0)
+                            bci.SetStateVariable(Name, 0);
+                        else
+                            bci.SetStateVariable(Name, 1);
+                        break;
+                    case StateType.SignedInt16:
+                    case StateType.SignedInt32:
+                        bci.SetStateVariable(Name, Mathf.Abs(value));
+                        if (value < 0)
+                            bci.SetStateVariable(Name + "Sign", 1);
+                        else
+                            bci.SetStateVariable(Name + "Sign", 0);
+                        break;
+                    case StateType.UnsignedInt16:
+                    case StateType.UnsignedInt32:
+                        bci.SetStateVariable(Name, value);
+                        break;
+                }
             }
         }
     }
