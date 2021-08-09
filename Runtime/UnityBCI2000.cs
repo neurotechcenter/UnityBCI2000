@@ -25,6 +25,7 @@ public class UnityBCI2000 : MonoBehaviour
     public string LogFile;
     public bool LogStates;
     public bool LogPrompts;
+    public bool DontEndBCI2000OnQuit;
     private bool afterFirst = false;
 
     private List<StateVariable> states = new List<StateVariable>();
@@ -106,18 +107,15 @@ public class UnityBCI2000 : MonoBehaviour
     {
         if (!afterFirst) //Start and set config, so other scripts can add variables.
         {
-
             foreach (StateVariable state in states) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
             {
                 switch (state.Type)
                 {
                     case StateType.Boolean:
                         bci.AddStateVariable(state.Name, 1, 0);
-                        Debug.Log("Adding bool");
                         break;
                     case StateType.UnsignedInt32:
                         bci.AddStateVariable(state.Name, 32, 0);
-                        Debug.Log("Adding uint32");
                         break;
                     case StateType.SignedInt32:
                         bci.AddStateVariable(state.Name, 32, 0);
@@ -160,11 +158,19 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
 
+    private void OnApplicationQuit()
+    {
+        bci.Stop();
+    }
+
+
     public class StateVariable
     {
         public string Name { get; }
-        public StateType Type { get; } //bad naming, couldn't think of anything else
+        public StateType Type { get; }
         private readonly BCI2000Remote bci;
+
+        private int lastSentValue;
         public StateVariable(string name, StateType type, BCI2000Remote inBci)
         {
             Name = name;
@@ -175,26 +181,30 @@ public class UnityBCI2000 : MonoBehaviour
 
         public void Set(int value)
         {
-            switch (Type)
+            if (value != lastSentValue) //check if the new value is different than the last sent value, to avoid unneccessary calls to bci2k
             {
-                case StateType.Boolean:
-                    if (value == 0)
-                        bci.SetStateVariable(Name, 0);
-                    else
-                        bci.SetStateVariable(Name, 1);
-                    break;
-                case StateType.SignedInt16:
-                case StateType.SignedInt32:
-                    bci.SetStateVariable(Name, Mathf.Abs(value));
-                    if (value < 0)
-                        bci.SetStateVariable(Name + "Sign", 1);
-                    else
-                        bci.SetStateVariable(Name + "Sign", 0);
-                    break;
-                case StateType.UnsignedInt16:
-                case StateType.UnsignedInt32:
-                    bci.SetStateVariable(Name, value);
-                    break;
+                lastSentValue = value;
+                switch (Type)
+                {
+                    case StateType.Boolean:
+                        if (value == 0)
+                            bci.SetStateVariable(Name, 0);
+                        else
+                            bci.SetStateVariable(Name, 1);
+                        break;
+                    case StateType.SignedInt16:
+                    case StateType.SignedInt32:
+                        bci.SetStateVariable(Name, Mathf.Abs(value));
+                        if (value < 0)
+                            bci.SetStateVariable(Name + "Sign", 1);
+                        else
+                            bci.SetStateVariable(Name + "Sign", 0);
+                        break;
+                    case StateType.UnsignedInt16:
+                    case StateType.UnsignedInt32:
+                        bci.SetStateVariable(Name, value);
+                        break;
+                }
             }
         }
     }
