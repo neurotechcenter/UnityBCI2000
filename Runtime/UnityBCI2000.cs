@@ -106,18 +106,15 @@ public class UnityBCI2000 : MonoBehaviour
     {
         if (!afterFirst) //Start and set config, so other scripts can add variables.
         {
-
             foreach (StateVariable state in states) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
             {
                 switch (state.Type)
                 {
                     case StateType.Boolean:
                         bci.AddStateVariable(state.Name, 1, 0);
-                        Debug.Log("Adding bool");
                         break;
                     case StateType.UnsignedInt32:
                         bci.AddStateVariable(state.Name, 32, 0);
-                        Debug.Log("Adding uint32");
                         break;
                     case StateType.SignedInt32:
                         bci.AddStateVariable(state.Name, 32, 0);
@@ -160,10 +157,16 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
 
+    private void OnApplicationQuit()
+    {
+        bci.Stop();
+    }
+
+
     public class StateVariable
     {
         public string Name { get; }
-        public StateType Type { get; } //bad naming, couldn't think of anything else
+        public StateType Type { get; }
         private readonly BCI2000Remote bci;
 
         private int lastSentValue;
