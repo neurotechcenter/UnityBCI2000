@@ -208,7 +208,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
 
             sender.BCIObject = (GameObject)EditorGUILayout.ObjectField("UnityBCI2000 object", sender.BCIObject, typeof(GameObject), true);
             sender.screenCamera = (Camera)EditorGUILayout.ObjectField("Camera", sender.screenCamera, typeof(Camera), true);
-            sender.customVarsObject = (CustomVariableBase)EditorGUILayout.ObjectField("Custom Variable Supplier", sender.customVarsObject, typeof(Component), true);
+            sender.customVarsObject = (CustomVariableBase)EditorGUILayout.ObjectField("Custom Variable Supplier", sender.customVarsObject, typeof(CustomVariableBase), true);
 
             //Global coordinate toggles and scales
             sender.GlobalCoords = EditorGUILayout.Foldout(sender.GlobalCoords, "Global Coordinates", true);
