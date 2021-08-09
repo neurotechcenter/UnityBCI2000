@@ -38,7 +38,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
 
     [SerializeField] bool IsOnScreen;
     [SerializeField] bool Interaction;
-    [SerializeField] bool Velocity = false;
+    [SerializeField] bool Speed = false;
     [SerializeField] int VelScale = 1;
 
 
@@ -97,17 +97,17 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
                 }), 1);
         }
 
-        if (Velocity)
+        if (Speed)
         {
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
             if (rigidbody == null) //there is no rigidbody, so there must be a rigidbody2d
             {
                 Rigidbody2D rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody2D.velocity.magnitude), VelScale);
+                AddSendState("Speed", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody2D.Speed.magnitude), VelScale);
             }
             else
             {
-                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude), VelScale);
+                AddSendState("Speed", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.Speed.magnitude), VelScale);
             }
         }
 
@@ -243,11 +243,11 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             sender.IsOnScreen = EditorGUILayout.Toggle("Is on screen", sender.IsOnScreen);
 
 
-            //check for rigidbody before showing velocity toggle
+            //check for rigidbody before showing speed toggle
             if (sender.gameObject.GetComponent<Rigidbody>() != null || sender.gameObject.GetComponent<Rigidbody2D>() != null)
             {
-                sender.Velocity = EditorGUILayout.Toggle("Velocity", sender.Velocity);
-                if (sender.Velocity)
+                sender.Speed = EditorGUILayout.Toggle("Speed", sender.Speed);
+                if (sender.Speed)
                     sender.VelScale = EditorGUILayout.IntField("Scale", sender.VelScale);
             }
             sender.showCustomVars = EditorGUILayout.Foldout(sender.showCustomVars, "Custom Variables");
