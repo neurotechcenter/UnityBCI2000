@@ -56,40 +56,42 @@ Its type is a member of the enum `UnityBCI2000.StateType`, which represents the 
 #### Custom Variable Class Example
 
 Template
-`
-public class <ClassName> : CustomVariableBase
-{
-    public override void AddCustomVariables() //Copy this for more variables
-    {
-        customVariables.Add(new CustomVariable(
-            "<Name>",
-            new Func<float>(() => <Value>),
-            <Scale>,
-            UnityBCI2000.StateType.<Type>
-            ));
-    }
-`
-Example
-`
-public class CustomVariableSupplier1 : CustomVariableBase
-{
-    public override void AddCustomVariables() //Copy this for more variables
-    {
-        customVariables.Add(new CustomVariable(
-            "Custom variable 1",
-            new Func<float>(() => {return 65 / 5;}),
-            100,
-            UnityBCI2000.StateType.SignedInt16
-            ));
 
-        customVariables.Add(new CustomVariable(
-            "Custom variable 2: Frame count",
-            new Func<float>(() => Time.frameCount),
-            1,
-            UnityBCI2000.StateType.UnsignedInt32
-            ));
+    public class <ClassName> : CustomVariableBase
+    {
+        public override void AddCustomVariables() //Copy this for more variables
+        {
+            customVariables.Add(new CustomVariable(
+                "<Name>",
+                new Func<float>(() => <Value>),
+                <Scale>,
+                UnityBCI2000.StateType.<Type>
+                ));
+        }
     }
-`
+
+Example
+
+    public class CustomVariableSupplier1 : CustomVariableBase
+    {
+        public override void AddCustomVariables() //Copy this for more variables
+        {
+            customVariables.Add(new CustomVariable(
+                "Custom variable 1",
+                new Func<float>(() => {return 65 / 5;}),
+                100,
+                UnityBCI2000.StateType.SignedInt16
+                ));
+    
+            customVariables.Add(new CustomVariable(
+                "Custom variable 2: Frame count",
+                new Func<float>(() => Time.frameCount),
+                1,
+                UnityBCI2000.StateType.UnsignedInt32
+                ));
+        }
+    }
+
 
 ### Number Formats
 
