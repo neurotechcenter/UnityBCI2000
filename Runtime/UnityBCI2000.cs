@@ -25,7 +25,6 @@ public class UnityBCI2000 : MonoBehaviour
     public string LogFile;
     public bool LogStates;
     public bool LogPrompts;
-    public bool DontEndBCI2000OnQuit;
     private bool afterFirst = false;
 
     private List<StateVariable> states = new List<StateVariable>();

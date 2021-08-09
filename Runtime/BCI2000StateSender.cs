@@ -205,9 +205,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
         {
             var sender = target as BCI2000StateSender;
 
-
             sender.BCIObject = (GameObject)EditorGUILayout.ObjectField("UnityBCI2000 object", sender.BCIObject, typeof(GameObject), true);
-            sender.screenCamera = (Camera)EditorGUILayout.ObjectField("Camera", sender.screenCamera, typeof(Camera), true);
             sender.customVarsObject = (CustomVariableBase)EditorGUILayout.ObjectField("Custom Variable Supplier", sender.customVarsObject, typeof(CustomVariableBase), true);
 
             //Global coordinate toggles and scales
@@ -228,16 +226,19 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             sender.ScreenPosition = EditorGUILayout.Foldout(sender.ScreenPosition, "Screen Position", true);
             if (sender.ScreenPosition)
             {
-                sender.ScreenX = EditorGUILayout.Toggle("Screen X Position", sender.ScreenX);
-                if (sender.ScreenX)
-                    sender.SXScale = EditorGUILayout.IntField("Scale", sender.SXScale);
-                sender.ScreenY = EditorGUILayout.Toggle("Screen Y Position", sender.ScreenY);
-                if (sender.ScreenY)
-                    sender.SYScale = EditorGUILayout.IntField("Scale", sender.SYScale);
-                sender.ScreenZ = EditorGUILayout.Toggle("Screen Z Position", sender.ScreenZ);
-                if (sender.ScreenZ)
-                    sender.SZScale = EditorGUILayout.IntField("Scale", sender.SZScale);
-
+                sender.screenCamera = (Camera)EditorGUILayout.ObjectField("Camera", sender.screenCamera, typeof(Camera), true);
+                if (sender.screenCamera != null)
+                {
+                    sender.ScreenX = EditorGUILayout.Toggle("Screen X Position", sender.ScreenX);
+                    if (sender.ScreenX)
+                        sender.SXScale = EditorGUILayout.IntField("Scale", sender.SXScale);
+                    sender.ScreenY = EditorGUILayout.Toggle("Screen Y Position", sender.ScreenY);
+                    if (sender.ScreenY)
+                        sender.SYScale = EditorGUILayout.IntField("Scale", sender.SYScale);
+                    sender.ScreenZ = EditorGUILayout.Toggle("Screen Z Position", sender.ScreenZ);
+                    if (sender.ScreenZ)
+                        sender.SZScale = EditorGUILayout.IntField("Scale", sender.SZScale);
+                }
             }
             sender.IsOnScreen = EditorGUILayout.Toggle("Is on screen", sender.IsOnScreen);
 
