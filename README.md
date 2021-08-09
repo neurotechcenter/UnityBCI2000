@@ -155,8 +155,18 @@ The camera to use for finding screen position.
 `Is on screen`
 Is the object on screen.
 
+
 `Velocity`
 The velocity of the object in any direction.
 
 `Custom Variables`
 Lists the names of any added custom variables.
+
+Other Notes
+---
+`StateVariable` is a class which holds values necessary for sending states to BCI2000.
+They are stored in two places, a central list within `UnityBCI2000` which is only used for checking if a state already exists,
+and within the `BCI2000StateSender` which 'owns' the state, where they are stored within objects called `SendStateVariable`,
+which update the state with a new value every frame. This is done so that one state can be changed by mutiple `BCI2000StateSender`s,
+through the use of multiple `SendStateVariables` created using the `AddSendExistingState()` method. 
+
