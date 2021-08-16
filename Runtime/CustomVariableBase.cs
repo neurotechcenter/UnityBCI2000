@@ -77,7 +77,7 @@ public abstract class CustomVariableBase : MonoBehaviour //base script for handl
     {
         public CustomGetVariable(string name, Action<int> action, UnityBCI2000.StateType type, int scale) : base(name, type, scale)
         {
-            DelegateType = typeof(Func<float>);
+            DelegateType = typeof(Action<int>);
             Target = action.Target;
             Method = action.Method;
         }
