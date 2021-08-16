@@ -110,6 +110,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             else
             {
                 AddSendState("Speed", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude), VelScale);
+
             }
         }
 

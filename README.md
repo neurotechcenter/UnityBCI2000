@@ -2,8 +2,6 @@ UnityBCI2000
 ===
 Unity package which integrates BCI2000
 
-
-
 Dependencies
 ---
 UnityBCI2000 depends on the BCI2000RemoteNET library, located at
@@ -16,20 +14,20 @@ and bugs are to be expected.
 Description
 ---
 
-BCI2000 is a set of programs for brain and brain-computer interface research.
+BCI2000 is a set of programs for brain and brain-computer interface research.  
 Data is sent to BCI2000 using variables called 'states'. A state is simply an unsigned
 integer of 1 to 32 bits which is sent over TCP to the BCI2000 operator module.
 
 Usage
 ---
 
-Add the `UnityBCI2000.cs` script to one `GameObject`. This is the central script which communicates with BCI2000.
-Add the `BCI2000StateSender` to any object which you want to monitor with BCI2000.
+Add the `UnityBCI2000.cs` script to one `GameObject`. This is the central script which communicates with BCI2000.  
+Add the `BCI2000StateSender` to any object which you want to monitor with BCI2000.  
 Before starting, you must set the operator and modules to start up, by specifying the fields
-`OperatorPath` and `Module[1-3]`. All other properties have default settings and will function without change.
+`OperatorPath` and `Module[1-3]`. All other properties have default settings and will function without change.  
 Alternatively, if you leave `OperatorPath` blank, `BCI2000Remote` will attempt to connect to an operator at
-`TelnetIp:TelnetPort`. This is useful for if you already have an operator open that you want to use. If you also
-have modules started within a running BCI2000 instance, set `DontStartModules` to `true`, this will preserve
+`TelnetIp:TelnetPort`. This is useful for if you already have an operator open that you want to use.  
+If you also have modules started within a running BCI2000 instance, set `DontStartModules` to `true`, this will preserve
 your running modules.
 
 
@@ -39,18 +37,18 @@ your running modules.
 
 ### Adding custom variables
 
-To add custom variables,  add a script to the same object as a `BCI2000StateSender`, which inherits from `CustomVariableBase`.
-Then, add the `CustomVariableBase` to the "Custom Variable Supplier" field of the `BCI2000StateSender`
+To add custom variables,  add a script to the same object as a `BCI2000StateSender`, which inherits from `CustomVariableBase`.  
+Then, add the `CustomVariableBase` to the "Custom Variable Supplier" field of the `BCI2000StateSender`.
 
 Then, add `CustomVariable`s to the list `customVariables` within the `CustomVariableBase`. There are some included
 templates and snippets which show the syntax for adding custom variables.
 
 #### Custom Variables
 
-A custom variable has four fields. These are its name, value, scale, and type.
-Its name is a string which holds its name.
-Its value is a `Func<float>` delegate which returns a float, which will be sent to BCI2000, after being multiplied by its scale.
-Its type is a member of the enum `UnityBCI2000.StateType`, which represents the format of the number being sent to BCI2000.
+A custom variable has four fields. These are its name, value, scale, and type.  
+Its name is a string which holds its name.  
+Its value is a `Func<float>` delegate which returns a float, which will be sent to BCI2000, after being multiplied by its scale.  
+Its type is a member of the enum `UnityBCI2000.StateType`, which represents the format of the number being sent to BCI2000.  
 
 
 #### Custom Variable Class Example
@@ -98,9 +96,9 @@ Example
 The available formats are found in the enum `UnityBCI2000.StateType`. As they are being accessed outside of `UnityBCI2000`, 
 they will always be preceded by "UnityBCI2000.".
 
-The formats are `Boolean`, `UnsignedInt16`, `UnsignedInt32`, `SignedInt16`, and `SignedInt32`.
-These are available formats because BCI2000 takes state values in the form of unsigned integers with a bit width of powers of 2 between 1 and 32.
-Boolean is the same as an unsigned int of bit width 1.
+The formats are `Boolean`, `UnsignedInt16`, `UnsignedInt32`, `SignedInt16`, and `SignedInt32`.  
+These are available formats because BCI2000 takes state values in the form of unsigned integers with a bit width of powers of 2 between 1 and 32.  
+Boolean is the same as an unsigned int of bit width 1.  
 Signed numbers will generate a second state within BCI2000 of bit width 1, which holds their sign. If they are negative, their sign will be 1,
 and if they are positive, their sign will be 0. Use signed numbers if your value will ever be negative.
 
@@ -108,10 +106,6 @@ and if they are positive, their sign will be 0. Use signed numbers if your value
 ### Other scripting
 
 Try to avoid calling any of the methods directly. UnityBCI2000 should ideally be able to run and control BCI2000 without any intervention.
-
-
-BCI2000Remote will write its output to a log file that is, by default, located at logFile.txt in the working directory of your Unity application.
-
 
 
 Properties
@@ -166,9 +160,10 @@ Lists the names of any added custom variables.
 
 Other Notes
 ---
-`StateVariable` is a class which holds values necessary for sending states to BCI2000.
+`StateVariable` is a class which holds values necessary for sending states to BCI2000.  
 They are stored in two places, a central list within `UnityBCI2000` which is only used for checking if a state already exists,
 and within the `BCI2000StateSender` which 'owns' the state, where they are stored within objects called `SendStateVariable`,
 which update the state with a new value every frame. This is done so that one state can be changed by mutiple `BCI2000StateSender`s,
 through the use of multiple `SendStateVariables` created using the `AddSendExistingState()` method. 
 
+BCI2000Remote will write its output to a log file that is, by default, located at logFile.txt in the working directory of your Unity application.
