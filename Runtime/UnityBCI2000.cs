@@ -15,11 +15,11 @@ public class UnityBCI2000 : MonoBehaviour
     public string TelnetIp;
     public int TelnetPort;
     public bool DontStartModules;
-    public string Module1;
+    public string Module1 = "SignalGenerator";
     public string[] Module1Args;
-    public string Module2;
+    public string Module2 = "DummySignalProcessing";
     public string[] Module2Args;
-    public string Module3;
+    public string Module3 = "DummyApplication";
     public string[] Module3Args;
     private Dictionary<string, List<string>> modules;
     public string LogFile;
@@ -205,6 +205,12 @@ public class UnityBCI2000 : MonoBehaviour
                         break;
                 }
             }
+        }
+        public int Get()
+        {
+            double value = 0;
+            bci.GetStateVariable(Name, ref value);
+            return (int)value;
         }
     }
 }

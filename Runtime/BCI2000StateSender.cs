@@ -38,16 +38,18 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
 
     [SerializeField] bool IsOnScreen;
     [SerializeField] bool Interaction;
-    [SerializeField] bool Velocity = false;
+    [SerializeField] bool Speed = false;
     [SerializeField] int VelScale = 1;
 
 
-    private List<SendState> variables = new List<SendState>();
+    private List<StateBase> variables = new List<StateBase>();
 
     [SerializeField] private bool showCustomVars;
     //serialized list of custom variables, so they can be held outside of play mode.
     [SerializeField]
-    private List<string> customVariables = new List<string>();
+    private List<string> customSendVariables = new List<string>();
+    [SerializeField]
+    private List<string> customGetVariables = new List<string>();
 
 
     // Start is called before the first frame update
@@ -97,17 +99,17 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
                 }), 1);
         }
 
-        if (Velocity)
+        if (Speed)
         {
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
             if (rigidbody == null) //there is no rigidbody, so there must be a rigidbody2d
             {
                 Rigidbody2D rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody2D.velocity.magnitude), VelScale);
+                AddSendState("Speed", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody2D.velocity.magnitude), VelScale);
             }
             else
             {
-                AddSendState("Velocity", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude), VelScale);
+                AddSendState("Speed", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude), VelScale);
             }
         }
 
@@ -120,18 +122,17 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
     // Update is called once per frame
     void Update()
     {
-        foreach (SendState state in variables)
+        foreach (StateBase state in variables)
         {
             state.Update();
         }
     }
 
 
-    private void AddSendState(string name, UnityBCI2000.StateType type, Func<float> value, int scale)
+    public void AddSendState(string name, UnityBCI2000.StateType type, Func<float> value, int scale)
     {
-        string objNameNoWS = new string(gameObject.name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());//remove whitespace from names
-        string nameNoWS = new string(name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-        UnityBCI2000.StateVariable state = bci.AddState(objNameNoWS + nameNoWS, type);
+
+        UnityBCI2000.StateVariable state = bci.AddState(GetStateNameNoWS(name), type);
         int scale2 = scale;
         if (type == UnityBCI2000.StateType.Boolean) //scale must be 1 if the value is boolean
             scale2 = 1;
@@ -140,7 +141,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
 
 
 
-    private void AddSendExistingState(string name, Func<float> value, int scale)
+    public void AddSendExistingState(string name, Func<float> value, int scale)
     {
         UnityBCI2000.StateVariable state = bci.FindState(name);
         if (state == null)
@@ -152,33 +153,48 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
     }
 
 
-    private void AddSendExistingState(UnityBCI2000.StateVariable state, Func<float> value, int scale)
+    public void AddSendExistingState(UnityBCI2000.StateVariable state, Func<float> value, int scale)
     {
         variables.Add(new SendState(state, value, scale));
     }
 
 
-
-    public void AddCustomVariable(string name, Func<float> value, int scale, UnityBCI2000.StateType type)
+    public void AddGetState(string name, Action<int> action)
     {
-        if (bci.FindState("name") == null)
+        if (bci.FindState(name) == null)
+        {
+            Debug.LogError("Unable to find state \"" + name + '\"');
+            return;
+        }
+
+    }
+
+
+    public void AddCustomSendVariable(string name, Func<float> value, int scale, UnityBCI2000.StateType type)
+    {
+        if (bci.FindState(GetStateNameNoWS(name)) == null)
             AddSendState(name, type, value, scale);
         else
             AddSendExistingState(name, value, scale);
     }
-    public void AddCustomVariable(string name, Func<float> value, UnityBCI2000.StateType type)
+    public void AddCustomGetVariable(string name, Action<int> action, int scale, UnityBCI2000.StateType type)
     {
-        AddCustomVariable(name, value, 1, type);
+
     }
-    public void EditorAddCustomVariable(string name)//this is only for displaying the names of added custom vars in the editor, as they are not serializable and must be added at runtime
+    public void EditorAddCustomVariable(string name, bool isGetVariable)//this is only for displaying the names of added custom vars in the editor, as they are not serializable and must be added at runtime
     {
-        customVariables.Add(name);
+        if (isGetVariable)
+            customGetVariables.Add(name);
+        else
+            customSendVariables.Add(name);
     }
+
 
 
     public void ClearCustomVariables()
     {
-        customVariables.Clear();
+        customSendVariables.Clear();
+        customGetVariables.Clear();
     }
 
 
@@ -194,6 +210,14 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             }
             customVarsObject.InitializeEditor();
         }
+    }
+
+
+    private string GetStateNameNoWS(string stateName)
+    {
+        string objNameNoWS = new string(gameObject.name.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());//remove whitespace from names
+        string nameNoWS = new string(stateName.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+        return objNameNoWS + nameNoWS;
     }
 
 
@@ -243,19 +267,38 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             sender.IsOnScreen = EditorGUILayout.Toggle("Is on screen", sender.IsOnScreen);
 
 
-            //check for rigidbody before showing velocity toggle
+            //check for rigidbody before showing speed toggle
             if (sender.gameObject.GetComponent<Rigidbody>() != null || sender.gameObject.GetComponent<Rigidbody2D>() != null)
             {
-                sender.Velocity = EditorGUILayout.Toggle("Velocity", sender.Velocity);
-                if (sender.Velocity)
+                sender.Speed = EditorGUILayout.Toggle("Speed", sender.Speed);
+                if (sender.Speed)
                     sender.VelScale = EditorGUILayout.IntField("Scale", sender.VelScale);
             }
             sender.showCustomVars = EditorGUILayout.Foldout(sender.showCustomVars, "Custom Variables");
             if (sender.showCustomVars)
             {
-                for (int ii = 0; ii < sender.customVariables.Count; ii++)
+                if (sender.customSendVariables.Count > 0)
                 {
-                    EditorGUILayout.LabelField(sender.customVariables[ii]);
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("Custom Get Variables");
+
+                    foreach (string name in sender.customSendVariables)
+                    {
+                        EditorGUILayout.LabelField(name);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                if (sender.customGetVariables.Count > 0)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("Custom Get Variables");
+
+                    foreach (string name in sender.customGetVariables)
+                    {
+                        EditorGUILayout.LabelField(name);
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
             }
             serializedObject.ApplyModifiedProperties();
@@ -263,25 +306,51 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
     }
 
 
-
-
-    private class SendState //class which sends values to a StateVariable. Two of these can point to the same StateVariable, use AddSendExistingState()
+    private abstract class StateBase
     {
         public string Name { get; }
         public int Scale { get; }
+        public UnityBCI2000.StateVariable state;
 
-        public Func<float> StoredVar { get; }
-        private UnityBCI2000.StateVariable state;
-
-        public SendState(UnityBCI2000.StateVariable inState, Func<float> storedVar, int scale)
+        public StateBase(UnityBCI2000.StateVariable inState, int scale)
         {
             Scale = scale;
-            StoredVar = storedVar;
             state = inState;
         }
-        public void Update()
+        public abstract void Update();
+    }
+
+    private class SendState : StateBase //class which sends values to a StateVariable. Two of these can point to the same StateVariable, use AddSendExistingState()
+    {
+
+        private Func<float> StoredVar { get; }
+
+        public SendState(UnityBCI2000.StateVariable inState, Func<float> storedVar, int scale) : base(inState, scale)
+        {
+            StoredVar = storedVar;
+        }
+        public override void Update()
         {
             state.Set((int)(StoredVar.Invoke() * Scale));
+        }
+    }
+
+    private class GetState : StateBase
+    {
+        private Action<int> GetVar;
+
+        public GetState(UnityBCI2000.StateVariable inState, Action<int> getVar) : base(inState, 1)
+        {
+            GetVar = getVar;
+        }
+
+        public override void Update()
+        {
+            GetVar.Invoke(state.Get());
+        }
+        public int GetValue()
+        {
+            return state.Get();
         }
     }
 }
