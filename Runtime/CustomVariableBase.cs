@@ -45,7 +45,7 @@ public abstract class CustomVariableBase : MonoBehaviour //base script for handl
         }
     }
 
-    public class CustomVariable
+    public abstract class CustomVariable
     {
         public string Name;
         public UnityBCI2000.StateType Type;
