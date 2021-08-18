@@ -220,7 +220,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
     }
 
 
-
+#if UNITY_EDITOR
     [CustomEditor(typeof(BCI2000StateSender))]
     public class StateSenderEditor : Editor
     {
@@ -303,7 +303,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             serializedObject.ApplyModifiedProperties();
         }
     }
-
+#endif
 
     private abstract class StateBase
     {
