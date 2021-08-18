@@ -110,7 +110,6 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
             else
             {
                 AddSendState("Speed", UnityBCI2000.StateType.UnsignedInt32, new Func<float>(() => rigidbody.velocity.magnitude), VelScale);
-
             }
         }
 
@@ -159,16 +158,15 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
         variables.Add(new SendState(state, value, scale));
     }
 
-
+    // Need to add a way to check for existing states on BCI2k operator, and add them to UnityBCI2000
     public void AddGetState(string name, Action<int> action)
     {
         if (bci.FindState(name) == null)
-        {
-            Debug.LogError("Unable to find state \"" + name + '\"');
-            return;
-        }
-
+            variables.Add(new GetState(bci.AddState(name, UnityBCI2000.StateType.UnsignedInt16), action));
+        else
+            variables.Add(new GetState(bci.FindState(name), action));
     }
+
 
 
     public void AddCustomSendVariable(string name, Func<float> value, int scale, UnityBCI2000.StateType type)
@@ -178,9 +176,9 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
         else
             AddSendExistingState(name, value, scale);
     }
-    public void AddCustomGetVariable(string name, Action<int> action, int scale, UnityBCI2000.StateType type)
+    public void AddCustomGetVariable(string name, Action<int> action)
     {
-
+        AddGetState(name, action);
     }
     public void EditorAddCustomVariable(string name, bool isGetVariable)//this is only for displaying the names of added custom vars in the editor, as they are not serializable and must be added at runtime
     {
@@ -347,7 +345,8 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
 
         public override void Update()
         {
-            GetVar.Invoke(state.Get());
+            int i = state.Get();
+            GetVar.Invoke(i);
         }
         public int GetValue()
         {

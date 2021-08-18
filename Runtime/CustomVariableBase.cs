@@ -29,7 +29,7 @@ public abstract class CustomVariableBase : MonoBehaviour //base script for handl
             if (customVar is CustomSendVariable)
                 Sender.AddCustomSendVariable(customVar.Name, (Func<float>)Delegate.CreateDelegate(customVar.DelegateType, customVar.Target, customVar.Method), customVar.Scale, customVar.Type);
             else if (customVar is CustomGetVariable)
-                Sender.AddCustomGetVariable(customVar.Name, (Action<int>)Delegate.CreateDelegate(customVar.DelegateType, customVar.Target, customVar.Method), customVar.Scale, customVar.Type);
+                Sender.AddCustomGetVariable(customVar.Name, (Action<int>)Delegate.CreateDelegate(customVar.DelegateType, customVar.Target, customVar.Method));
         }
     }
 
@@ -65,7 +65,7 @@ public abstract class CustomVariableBase : MonoBehaviour //base script for handl
 
     public class CustomSendVariable : CustomVariable
     {
-        public CustomSendVariable(string name, Func<float> value, UnityBCI2000.StateType type, int scale) : base(name, type, scale)
+        public CustomSendVariable(string name, Func<float> value, int scale, UnityBCI2000.StateType type) : base(name, type, scale)
         {
             DelegateType = typeof(Func<float>);
             Target = value.Target;
@@ -75,7 +75,7 @@ public abstract class CustomVariableBase : MonoBehaviour //base script for handl
 
     public class CustomGetVariable : CustomVariable
     {
-        public CustomGetVariable(string name, Action<int> action, UnityBCI2000.StateType type, int scale) : base(name, type, scale)
+        public CustomGetVariable(string name, Action<int> action) : base(name, UnityBCI2000.StateType.UnsignedInt32, 1)
         {
             DelegateType = typeof(Action<int>);
             Target = action.Target;
