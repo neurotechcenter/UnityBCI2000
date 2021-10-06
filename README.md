@@ -57,15 +57,19 @@ Template
 
     public class <ClassName> : CustomVariableBase
     {
-        public override void AddCustomVariables() //Copy this for more variables
+        public override void AddCustomVariables()
         {
-            customVariables.Add(new CustomSetVariable(
+            customVariables.Add(new CustomSetVariable(  //Copy this for more set variables
                 "[Name]",
-                new Func<float>(() => [Value]),
+                new Func<float>(() => [Code which returns variable to send]),
                 [Scale],
                 UnityBCI2000.StateType.[Type]
                 ));
-
+                
+            customVariables.Add(new CustomGetVariable(  //Copy this for more get variables
+                "[Name]",  
+                new Action<int> ((int i) => [Code which uses i])
+            ));
 
         }
     }
@@ -74,9 +78,9 @@ Example
 
     public class CustomVariableSupplier1 : CustomVariableBase
     {
-        public override void AddCustomVariables() //Copy this for more variables
+        public override void AddCustomVariables() 
         {
-            customVariables.Add(new CustomSetVariable(
+            customVariables.Add(new CustomSetVariable( 
                 "Custom variable 1",
                 new Func<float>(() => {return 65 / 5;}),
                 100,
