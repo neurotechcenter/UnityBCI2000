@@ -305,7 +305,7 @@ public class BCI2000StateSender : MonoBehaviour, ISerializationCallbackReceiver
     }
 #endif
 
-    private abstract class StateBase
+    private abstract class StateBase  
     {
         public string Name { get; }
         public int Scale { get; }

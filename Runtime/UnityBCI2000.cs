@@ -28,6 +28,7 @@ public class UnityBCI2000 : MonoBehaviour
     private bool afterFirst = false;
 
     private List<StateVariable> states = new List<StateVariable>();
+    private List<Event> events = new List<Event>();
 
     public enum StateType //copy this to any object which sends states in Start(), don't want to be copying this every frame
     {
@@ -47,12 +48,22 @@ public class UnityBCI2000 : MonoBehaviour
     {
         if (states.Find(x => x.Name == name) != null)
         {
-            Debug.Log("State " + name + " already exists");
-            return null;
+            throw new ArgumentException("State " + name + " already exists.");
         }
         StateVariable newState = new StateVariable(name, type, bci);
         states.Add(newState);
         return (newState);
+    }
+
+    public Event addEvent(name)
+    {
+        if (eventsFind(x => x.Name = name)) {
+            throw new ArgumentException("Event " + nameof + " already exists");
+        }
+        Event e = new Event(name, this);
+        bci.Execute("ADD EVENT " + name + " 32 0"); 
+        events.add(e);
+        return e;
     }
 
     // Start is called before the first frame update
@@ -137,6 +148,11 @@ public class UnityBCI2000 : MonoBehaviour
 
 
     }
+
+    void callEvent (string name, int value)
+    {
+        bci.Execute("SET EVENT " + name + " " + value);
+    }
     /*
     public void StartRun()
     {
@@ -211,6 +227,21 @@ public class UnityBCI2000 : MonoBehaviour
             double value = 0;
             bci.GetStateVariable(Name, ref value);
             return (int)value;
+        }
+    }
+    public class Event
+    {
+        string Name { get; }
+        private UnityBCI2000 bci;
+        private Event(string name, UnityBCI2000 bci)
+        {
+            Name = name;
+            this.bci = bci;
+        }
+
+        public void call(uint value)
+        {
+            bci.callEvent(Name, value);
         }
     }
 }
