@@ -31,6 +31,50 @@ If you also have modules started within a running BCI2000 instance, set `DontSta
 your running modules.
 
 
+### Adding and calling events
+
+Adding events must be done in the `Start()` method of a `MonoBehaviour`.
+This is done by calling `UnityBCI2000.addEvent("{{ Your event name }}");`.
+
+Events are called via the `UnityBCI2000.callEvent(string, int)` method, with the name of the event and a value to log to BCI2000.
+In both of these cases `UnityBCI2000 will be replace with the name of a local reference to a UnityBCI2000 object, which should be initialized by calling `GameObject.find("{{ The name of the GameObject containing UnityBCI2000 }}").getComponent<UnityBCI2000>();` in the `Start()` method of `MonoBehaviour`.
+
+#### Example:
+```
+For a scene which is structured like this:
+Scene1
+|-BCI   <- GameObject
+| |- UnityBCI2000.cs
+|
+|-SomeGameObject <- GameObject
+  |-SomeLogic.cs <- MonoBehaviour
+ ```
+`SomeLogic.cs` could look like this:
+
+ ```
+ public class SomeLogic : MonoBehaviour {
+     private UnityBCI2000 bci;
+     private int someValue;
+     
+     void Start() {
+         bci = GameObject.find("BCI").getComponent<UnityBCI2000>();
+         bci.addEvent("SomeEvent");
+     }
+
+     void Update() {
+         {{ Object Logic }}
+         if (someCondition) {
+             doSomething();
+         }
+     }
+
+     void doSomething() {
+         {{ Object Logic }}
+         bci.callEvent("SomeEvent", someValue);
+     }
+ }
+ ```
+
 ### Using built-in variables
 
 `BCI2000StateSender` has some variables built in. To use these, just select their check boxes in the inspector.

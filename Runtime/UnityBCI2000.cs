@@ -55,13 +55,12 @@ public class UnityBCI2000 : MonoBehaviour
         return (newState);
     }
 
-    public Event addEvent(name)
+    public Event AddEvent(name)
     {
         if (eventsFind(x => x.Name = name)) {
             throw new ArgumentException("Event " + nameof + " already exists");
         }
         Event e = new Event(name, this);
-        bci.Execute("ADD EVENT " + name + " 32 0"); 
         events.add(e);
         return e;
     }
@@ -140,6 +139,9 @@ public class UnityBCI2000 : MonoBehaviour
                         break;
                 }
             }
+            foreach (Event in events) {
+                bci.Execute("ADD EVENT " + name + " 32 0");
+            }
 
             bci.SetConfig();
             bci.Start();
@@ -149,7 +151,7 @@ public class UnityBCI2000 : MonoBehaviour
 
     }
 
-    void callEvent (string name, int value)
+    void CallEvent (string name, int value)
     {
         bci.Execute("SET EVENT " + name + " " + value);
     }
