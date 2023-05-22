@@ -21,6 +21,7 @@ public class UnityBCI2000 : MonoBehaviour
     public string[] Module2Args;
     public string Module3 = "DummyApplication";
     public string[] Module3Args;
+    public string[] initCommands;
     private Dictionary<string, List<string>> modules;
     public string LogFile;
     public bool LogStates;
@@ -70,7 +71,7 @@ public class UnityBCI2000 : MonoBehaviour
         bci.LogStates = LogStates;
         bci.LogPrompts = LogPrompts;
 
-        bci.Connect();
+        bci.Connect(initCommands);
 
         List<string> module1ArgsList;
         if (Module1Args.Length == 0)
