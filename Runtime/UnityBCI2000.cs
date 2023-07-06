@@ -154,9 +154,22 @@ public class UnityBCI2000 : MonoBehaviour
     public double GetSignal(int channel, int element)
     {
         bci.SimpleCommand("GET SIGNAL(" + channel + "," + element + ")");
-        return Double.Parse(bci.Response);
+        string res = bci.Response;
+        string res2 = bci.Response.Remove(res.Length - 1);
+        return Double.Parse(res2);
     }
 
+
+    public int getEvent(string eventName) 
+    {
+        //return bci.GetEvent(eventName);
+
+        bci.SimpleCommand("GET EVENT " + eventName);
+        Debug.Log(bci.Response);
+        string res = bci.Response;
+        string res2 = res.Remove(res.Length - 1);
+        return (int) Double.Parse(res2);
+    }
 
 
     private void OnDestroy()
