@@ -9,52 +9,182 @@ using UnityEngine;
 
 public class UnityBCI2000 : MonoBehaviour
 {
+    /// <summary>
+    /// The path to the BCI2000 Operator module binary
+    /// </summary>
+    private string OperatorPath;
+    //Use of a remote operator is unsupported due to the fact that UnityBCI2000 will not be able to
+    //function correctly with the amount of communication latency that would exist when using a remote operator.
+    //public string TelnetIp
+    private string TelnetIp;
+    //public int TelnetPort;
+    private int TelnetPort;
+    /// <summary>
+    /// Don't start the Source, Processing, or Application modules when starting UnityBCI2000
+    /// </summary>
+    public bool DontStartModules;
+    /// <summary>
+    /// The Source Module to start up
+    /// </summary>
+    public string Module1 = "SignalGenerator";
+    /// <summary>
+    /// Arguments to pass to the Source module. '--' at the start of each argument is unnecessary.
+    /// </summary>
+    public string[] Module1Args;
+    /// <summary>
+    /// The Processing Module to start up
+    /// </summary>
+    public string Module2 = "DummySignalProcessing";
+    /// <summary>
+    /// Arguments to pass to the Processing module. '--' at the start of each argument is unnecessary.
+    /// </summary>
+    public string[] Module2Args;
+    /// <summary>
+    /// The Application Module to start up. For most use cases, this should be left as `DummyApplication`
+    /// because the Unity app should function as its replacement.
+    /// </summary>
+    public string Module3 = "DummyApplication";
+    /// <summary>
+    /// Arguments to pass to the Application module. '--' at the start of each argument is unnecessary.
+    /// </summary>
+    public string[] Module3Args;
+    /// <summary>
+    /// Commands to run immediately upon startup of BCI2000. These run before any of the modules are started.
+    /// </summary>
+    public string[] initCommands;
+    /// <summary>
+    /// The file to store log output
+    /// </summary>
+    public string LogFile;
+    /// <summary>
+    /// Log state variable changes
+    /// </summary>
+    public bool LogStates;
+    /// <summary>
+    /// Log `>` characters received from BCI2000
+    /// </summary>
+    public bool LogPrompts;
+    /// <summary>
+    /// BCI2000 parameter files to be loaded before operaation starts
+    /// </summary>
+    public List<string> parameterFiles = new List<string>();
+
+
+
+    /// <summary>
+    /// Adds a state to BCI2000. This must be called within the Start() method of a MonoBehviour to work properly.
+    /// The added state has a bit width of 32 and initial state of 0.
+    /// </summary>
+    /// <param name="name">The name of the state to add</param>
+    public void AddState(string name) 
+    {
+        statenames.Add(name);
+    }
+
+    /// <summary>
+    /// Adds an event to BCI2000. This must be called within the `Start()` method of a `MonoBehaviour` to work properly
+    /// </summary>
+    /// <param name="name"></param>
+    public void AddEvent(string name)
+    {
+        eventnames.Add(name);
+    }
+
+    /// <summary>
+    /// Return the value of the control signal on specified channel and element
+    /// </summary>
+    /// <param name="channel">The channel of the desired signal</param>
+    /// <param name="element">The element of the desired signal</param>
+    /// <returns>The value of the signal</returns>
+    /// <exception cref="Exception">Channel and element must be greater than or equal to zero.
+    /// However, UnityBCI2000 does not check if the channel and element values are valid for the current BCI2000 configuration.</exception>
+    public double GetSignal(int channel, int element)
+    {
+        if (channel < 0)
+        {
+            throw new Exception("Channel cannot be less than 0");
+        }
+        if (element < 0)
+        {
+            throw new Exception("Element cannot be less than 0");
+        }
+        return bci.GetSignal((uint) channel, (uint) element);
+    }
+    
+    /// <summary>
+    /// Sets the value of a selected BCI2000 state variable
+    /// </summary>
+    /// <param name="name">The name of the desired state variable</param>
+    /// <param name="value">The value to set the state to. Values less than zero will be instead sent as zero.</param>
+    public void SetState(string name, int value)
+    {
+        if (afterFirst)
+        {
+            bci.SetStateVariable(name, (UInt32) Math.Max(value, 0)); // states cannot be negative, values will be set to zero instead
+        }
+
+    }
+
+    /// <summary>
+    /// Gets the value of a BCI2000 state variable
+    /// </summary>
+    /// <param name="name">The name of the desired state variable</param>
+    /// <returns>The value of the state variable</returns>
+    public int GetState(string name)
+    {
+        if (afterFirst)
+        {
+            return (int) bci.GetStateVariable(name);
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// Sets the value of a BCI2000 event. This is useful for recording values that change more rapidly than a state variable can handle.
+    /// If you are trying to log when something happens, consider using `PulseEvent` instead.
+    /// </summary>
+    /// <param name="name">The name of the desired event</param>
+    /// <param name="value">The value to set the event</param>
+    public void SetEvent(string name, int value)
+    {
+        if (afterFirst)
+        {
+            bci.SetEvent(name, (UInt32) Math.Max(value, 0));
+        }
+    }
+
+    /// <summary>
+    /// Sets an event to a value for a single sample, then returns it to its previous value.
+    /// </summary>
+    /// <param name="name">The name of the desired event</param>
+    /// <param name="value">The value for the event</param>
+    public void PulseEvent(string name, int value)
+    {
+        if (afterFirst)
+        {
+            bci.PulseEvent(name, (UInt32) Math.Max(value, 0));
+        }
+    }
+
+    /// <summary>
+    /// Gets the value of an event
+    /// </summary>
+    /// <param name="eventName">The name of the desired event</param>
+    /// <returns>The current value of the event</returns>
+    public int GetEvent(string eventName) 
+    {
+        if (afterFirst)
+        {
+            return bci.GetEvent(eventName);
+        }
+        return 0;
+    }
 
     private BCI2000Remote bci = new BCI2000Remote();
-    public string OperatorPath;
-    public string TelnetIp;
-    public int TelnetPort;
-    public bool DontStartModules;
-    public string Module1 = "SignalGenerator";
-    public string[] Module1Args;
-    public string Module2 = "DummySignalProcessing";
-    public string[] Module2Args;
-    public string Module3 = "DummyApplication";
-    public string[] Module3Args;
-    public string[] initCommands;
-    private Dictionary<string, List<string>> modules;
-    public string LogFile;
-    public bool LogStates;
-    public bool LogPrompts;
+    private List<string> statenames = new List<string>();
+    private List<string> eventnames = new List<string>();
     private bool afterFirst = false;
-
-    private List<StateVariable> states = new List<StateVariable>();
-
-    public enum StateType //copy this to any object which sends states in Start(), don't want to be copying this every frame
-    {
-        UnsignedInt32,
-        SignedInt32,
-        UnsignedInt16,
-        SignedInt16,
-        Boolean
-    }
-
-    public StateVariable FindState(string name)
-    {
-        return states.Find(x => x.Name == name);
-    }
-
-    public StateVariable AddState(string name, StateType type) //can only be called in Start()
-    {
-        if (states.Find(x => x.Name == name) != null)
-        {
-            Debug.Log("State " + name + " already exists");
-            return null;
-        }
-        StateVariable newState = new StateVariable(name, type, bci);
-        states.Add(newState);
-        return (newState);
-    }
+    private Dictionary<string, List<string>> modules;
 
     // Start is called before the first frame update
     void Start()
@@ -71,7 +201,7 @@ public class UnityBCI2000 : MonoBehaviour
         bci.LogStates = LogStates;
         bci.LogPrompts = LogPrompts;
 
-        bci.Connect(initCommands);
+        bci.Connect(initCommands, eventnames.ToArray());
 
         List<string> module1ArgsList;
         if (Module1Args.Length == 0)
@@ -99,36 +229,20 @@ public class UnityBCI2000 : MonoBehaviour
             });
         }
 
+        foreach (string paramfile in parameterFiles) {
+            bci.LoadParameters(paramfile);
+        }
+
 
     }
-
     // Update is called once per frame
     void Update()
     {
         if (!afterFirst) //Start and set config, so other scripts can add variables.
         {
-            foreach (StateVariable state in states) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
+            foreach (string state in statenames) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
             {
-                switch (state.Type)
-                {
-                    case StateType.Boolean:
-                        bci.AddStateVariable(state.Name, 1, 0);
-                        break;
-                    case StateType.UnsignedInt32:
-                        bci.AddStateVariable(state.Name, 32, 0);
-                        break;
-                    case StateType.SignedInt32:
-                        bci.AddStateVariable(state.Name, 32, 0);
-                        bci.AddStateVariable(state.Name + "Sign", 1, 0);
-                        break;
-                    case StateType.UnsignedInt16:
-                        bci.AddStateVariable(state.Name, 16, 0);
-                        break;
-                    case StateType.SignedInt16:
-                        bci.AddStateVariable(state.Name, 16, 0);
-                        bci.AddStateVariable(state.Name + "Sign", 1, 0);
-                        break;
-                }
+                bci.AddStateVariable(state, 32, 0);
             }
 
             bci.SetConfig();
@@ -150,28 +264,6 @@ public class UnityBCI2000 : MonoBehaviour
         bci.Stop();
     }
     */
-
-    public double GetSignal(int channel, int element)
-    {
-        bci.SimpleCommand("GET SIGNAL(" + channel + "," + element + ")");
-        string res = bci.Response;
-        string res2 = bci.Response.Remove(res.Length - 1);
-        return Double.Parse(res2);
-    }
-
-
-    public int getEvent(string eventName) 
-    {
-        //return bci.GetEvent(eventName);
-
-        bci.SimpleCommand("GET EVENT " + eventName);
-        Debug.Log(bci.Response);
-        string res = bci.Response;
-        string res2 = res.Remove(res.Length - 1);
-        return (int) Double.Parse(res2);
-    }
-
-
     private void OnDestroy()
     {
         bci = null;
@@ -181,57 +273,5 @@ public class UnityBCI2000 : MonoBehaviour
     private void OnApplicationQuit()
     {
         bci.Stop();
-    }
-
-
-    public class StateVariable
-    {
-        public string Name { get; }
-        public StateType Type { get; }
-        private readonly BCI2000Remote bci;
-
-        private int lastSentValue;
-        public StateVariable(string name, StateType type, BCI2000Remote inBci)
-        {
-            Name = name;
-            bci = inBci;
-            Type = type;
-
-        }
-
-        public void Set(int value)
-        {
-            if (value != lastSentValue) //check if the new value is different than the last sent value, to avoid unneccessary calls to bci2k
-            {
-                lastSentValue = value;
-                switch (Type)
-                {
-                    case StateType.Boolean:
-                        if (value == 0)
-                            bci.SetStateVariable(Name, 0);
-                        else
-                            bci.SetStateVariable(Name, 1);
-                        break;
-                    case StateType.SignedInt16:
-                    case StateType.SignedInt32:
-                        bci.SetStateVariable(Name, Mathf.Abs(value));
-                        if (value < 0)
-                            bci.SetStateVariable(Name + "Sign", 1);
-                        else
-                            bci.SetStateVariable(Name + "Sign", 0);
-                        break;
-                    case StateType.UnsignedInt16:
-                    case StateType.UnsignedInt32:
-                        bci.SetStateVariable(Name, value);
-                        break;
-                }
-            }
-        }
-        public int Get()
-        {
-            double value = 0;
-            bci.GetStateVariable(Name, ref value);
-            return (int)value;
-        }
     }
 }
