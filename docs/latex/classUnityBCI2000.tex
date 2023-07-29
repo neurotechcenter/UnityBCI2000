@@ -1,0 +1,216 @@
+\doxysection{Unity\+BCI2000 Class Reference}
+\hypertarget{classUnityBCI2000}{}\label{classUnityBCI2000}\index{UnityBCI2000@{UnityBCI2000}}
+Inheritance diagram for Unity\+BCI2000\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classUnityBCI2000}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classUnityBCI2000_ab20972fb9e2250ff6b82daafba24de29}{Add\+State}} (string name)
+\begin{DoxyCompactList}\small\item\em Adds a state to BCI2000. This must be called within the Start() method of a Mono\+Behviour to work properly. The added state has a bit width of 32 and initial state of 0. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUnityBCI2000_a7b27e322eee56f2c93780f0752ef79cd}{Add\+Event}} (string name)
+\begin{DoxyCompactList}\small\item\em Adds an event to BCI2000. This must be called within the {\ttfamily Start()} method of a {\ttfamily Mono\+Behaviour} to work properly. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classUnityBCI2000_a35000269f2941e72bad5adf531697854}{Get\+Signal}} (int channel, int element)
+\begin{DoxyCompactList}\small\item\em Return the value of the control signal on specified channel and element. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUnityBCI2000_a99118e518989a5c18a5c14647824c86d}{Set\+State}} (string name, int value)
+\begin{DoxyCompactList}\small\item\em Sets the value of a selected BCI2000 state variable. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classUnityBCI2000_a3666d036fd5a088fd4c52cc8672bee09}{Get\+State}} (string name)
+\begin{DoxyCompactList}\small\item\em Gets the value of a BCI2000 state variable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUnityBCI2000_a513c659e32ce2df57aa375b5148b0f6d}{Set\+Event}} (string name, int value)
+\begin{DoxyCompactList}\small\item\em Sets the value of a BCI2000 event. This is useful for recording values that change more rapidly than a state variable can handle. If you are trying to log when something happens, consider using {\ttfamily Pulse\+Event} instead. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUnityBCI2000_a938be87a4b1053853930531c886920e0}{Pulse\+Event}} (string name, int value)
+\begin{DoxyCompactList}\small\item\em Sets an event to a value for a single sample, then returns it to its previous value. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classUnityBCI2000_aa9fb50da10a393cc0decccb4287e2e5b}{Get\+Event}} (string event\+Name)
+\begin{DoxyCompactList}\small\item\em Gets the value of an event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUnityBCI2000_a532d1706e6d52188b3c23fc0ce36d27d}\label{classUnityBCI2000_a532d1706e6d52188b3c23fc0ce36d27d} 
+bool {\bfseries Dont\+Start\+Modules}
+\begin{DoxyCompactList}\small\item\em Don\textquotesingle{}t start the Source, Processing, or Application modules when starting \doxylink{classUnityBCI2000}{Unity\+BCI2000}. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a6b042ddfa217e1ee24f58491c003d1fe}\label{classUnityBCI2000_a6b042ddfa217e1ee24f58491c003d1fe} 
+string {\bfseries Module1} = \"{}Signal\+Generator\"{}
+\begin{DoxyCompactList}\small\item\em The Source Module to start up. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a6e973422ab130572f2d3eb7f55b0e52c}\label{classUnityBCI2000_a6e973422ab130572f2d3eb7f55b0e52c} 
+string\mbox{[}$\,$\mbox{]} {\bfseries Module1\+Args}
+\begin{DoxyCompactList}\small\item\em Arguments to pass to the Source module. \textquotesingle{}--\textquotesingle{} at the start of each argument is unnecessary. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a816918db57ecf65f04a6e3de64a7d85f}\label{classUnityBCI2000_a816918db57ecf65f04a6e3de64a7d85f} 
+string {\bfseries Module2} = \"{}Dummy\+Signal\+Processing\"{}
+\begin{DoxyCompactList}\small\item\em The Processing Module to start up. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a1a46af5e9ffaac50378084aec0f7ac60}\label{classUnityBCI2000_a1a46af5e9ffaac50378084aec0f7ac60} 
+string\mbox{[}$\,$\mbox{]} {\bfseries Module2\+Args}
+\begin{DoxyCompactList}\small\item\em Arguments to pass to the Processing module. \textquotesingle{}--\textquotesingle{} at the start of each argument is unnecessary. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a9fe34565f694ae24be4f8bd2121dd563}\label{classUnityBCI2000_a9fe34565f694ae24be4f8bd2121dd563} 
+string {\bfseries Module3} = \"{}Dummy\+Application\"{}
+\begin{DoxyCompactList}\small\item\em The Application Module to start up. For most use cases, this should be left as {\ttfamily Dummy\+Application} because the Unity app should function as its replacement. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_aaa3e5707fabaa44f8b295f75872ab4fe}\label{classUnityBCI2000_aaa3e5707fabaa44f8b295f75872ab4fe} 
+string\mbox{[}$\,$\mbox{]} {\bfseries Module3\+Args}
+\begin{DoxyCompactList}\small\item\em Arguments to pass to the Application module. \textquotesingle{}--\textquotesingle{} at the start of each argument is unnecessary. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_af6e0150f6d172bb5166bc8580b6b294c}\label{classUnityBCI2000_af6e0150f6d172bb5166bc8580b6b294c} 
+string\mbox{[}$\,$\mbox{]} {\bfseries init\+Commands}
+\begin{DoxyCompactList}\small\item\em Commands to run immediately upon startup of BCI2000. These run before any of the modules are started. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_af98850fa96f747035f8f89c68aa6939c}\label{classUnityBCI2000_af98850fa96f747035f8f89c68aa6939c} 
+string {\bfseries Log\+File}
+\begin{DoxyCompactList}\small\item\em The file to store log output. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a890248b261ace132dee3689ed0b7e8e6}\label{classUnityBCI2000_a890248b261ace132dee3689ed0b7e8e6} 
+bool {\bfseries Log\+States}
+\begin{DoxyCompactList}\small\item\em Log state variable changes. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a1ab8de62d0ce8b8704a89f823eb7a9b4}\label{classUnityBCI2000_a1ab8de62d0ce8b8704a89f823eb7a9b4} 
+bool {\bfseries Log\+Prompts}
+\begin{DoxyCompactList}\small\item\em Log {\ttfamily \texorpdfstring{$>$}{>}} characters received from BCI2000. \end{DoxyCompactList}\item 
+\Hypertarget{classUnityBCI2000_a30480c85a10f7c44d7252a00b7bb21e4}\label{classUnityBCI2000_a30480c85a10f7c44d7252a00b7bb21e4} 
+List$<$ string $>$ {\bfseries parameter\+Files} = new List$<$string$>$()
+\begin{DoxyCompactList}\small\item\em BCI2000 parameter files to be loaded before operaation starts. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUnityBCI2000_a7b27e322eee56f2c93780f0752ef79cd}\label{classUnityBCI2000_a7b27e322eee56f2c93780f0752ef79cd} 
+\index{UnityBCI2000@{UnityBCI2000}!AddEvent@{AddEvent}}
+\index{AddEvent@{AddEvent}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{AddEvent()}{AddEvent()}}
+{\footnotesize\ttfamily void Unity\+BCI2000.\+Add\+Event (\begin{DoxyParamCaption}\item[{string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds an event to BCI2000. This must be called within the {\ttfamily Start()} method of a {\ttfamily Mono\+Behaviour} to work properly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classUnityBCI2000_ab20972fb9e2250ff6b82daafba24de29}\label{classUnityBCI2000_ab20972fb9e2250ff6b82daafba24de29} 
+\index{UnityBCI2000@{UnityBCI2000}!AddState@{AddState}}
+\index{AddState@{AddState}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{AddState()}{AddState()}}
+{\footnotesize\ttfamily void Unity\+BCI2000.\+Add\+State (\begin{DoxyParamCaption}\item[{string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a state to BCI2000. This must be called within the Start() method of a Mono\+Behviour to work properly. The added state has a bit width of 32 and initial state of 0. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the state to add\\
+\hline
+\end{DoxyParams}
+\Hypertarget{classUnityBCI2000_aa9fb50da10a393cc0decccb4287e2e5b}\label{classUnityBCI2000_aa9fb50da10a393cc0decccb4287e2e5b} 
+\index{UnityBCI2000@{UnityBCI2000}!GetEvent@{GetEvent}}
+\index{GetEvent@{GetEvent}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{GetEvent()}{GetEvent()}}
+{\footnotesize\ttfamily int Unity\+BCI2000.\+Get\+Event (\begin{DoxyParamCaption}\item[{string}]{event\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the value of an event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Name} & The name of the desired event\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The current value of the event
+\end{DoxyReturn}
+\Hypertarget{classUnityBCI2000_a35000269f2941e72bad5adf531697854}\label{classUnityBCI2000_a35000269f2941e72bad5adf531697854} 
+\index{UnityBCI2000@{UnityBCI2000}!GetSignal@{GetSignal}}
+\index{GetSignal@{GetSignal}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{GetSignal()}{GetSignal()}}
+{\footnotesize\ttfamily double Unity\+BCI2000.\+Get\+Signal (\begin{DoxyParamCaption}\item[{int}]{channel,  }\item[{int}]{element }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the value of the control signal on specified channel and element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & The channel of the desired signal\\
+\hline
+{\em element} & The element of the desired signal\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value of the signal
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & Channel and element must be greater than or equal to zero. However, \doxylink{classUnityBCI2000}{Unity\+BCI2000} does not check if the channel and element values are valid for the current BCI2000 configuration.\\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classUnityBCI2000_a3666d036fd5a088fd4c52cc8672bee09}\label{classUnityBCI2000_a3666d036fd5a088fd4c52cc8672bee09} 
+\index{UnityBCI2000@{UnityBCI2000}!GetState@{GetState}}
+\index{GetState@{GetState}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{GetState()}{GetState()}}
+{\footnotesize\ttfamily int Unity\+BCI2000.\+Get\+State (\begin{DoxyParamCaption}\item[{string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the value of a BCI2000 state variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the desired state variable\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value of the state variable
+\end{DoxyReturn}
+\Hypertarget{classUnityBCI2000_a938be87a4b1053853930531c886920e0}\label{classUnityBCI2000_a938be87a4b1053853930531c886920e0} 
+\index{UnityBCI2000@{UnityBCI2000}!PulseEvent@{PulseEvent}}
+\index{PulseEvent@{PulseEvent}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{PulseEvent()}{PulseEvent()}}
+{\footnotesize\ttfamily void Unity\+BCI2000.\+Pulse\+Event (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{int}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets an event to a value for a single sample, then returns it to its previous value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the desired event\\
+\hline
+{\em value} & The value for the event\\
+\hline
+\end{DoxyParams}
+\Hypertarget{classUnityBCI2000_a513c659e32ce2df57aa375b5148b0f6d}\label{classUnityBCI2000_a513c659e32ce2df57aa375b5148b0f6d} 
+\index{UnityBCI2000@{UnityBCI2000}!SetEvent@{SetEvent}}
+\index{SetEvent@{SetEvent}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{SetEvent()}{SetEvent()}}
+{\footnotesize\ttfamily void Unity\+BCI2000.\+Set\+Event (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{int}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the value of a BCI2000 event. This is useful for recording values that change more rapidly than a state variable can handle. If you are trying to log when something happens, consider using {\ttfamily Pulse\+Event} instead. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the desired event\\
+\hline
+{\em value} & The value to set the event\\
+\hline
+\end{DoxyParams}
+\Hypertarget{classUnityBCI2000_a99118e518989a5c18a5c14647824c86d}\label{classUnityBCI2000_a99118e518989a5c18a5c14647824c86d} 
+\index{UnityBCI2000@{UnityBCI2000}!SetState@{SetState}}
+\index{SetState@{SetState}!UnityBCI2000@{UnityBCI2000}}
+\doxysubsubsection{\texorpdfstring{SetState()}{SetState()}}
+{\footnotesize\ttfamily void Unity\+BCI2000.\+Set\+State (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{int}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the value of a selected BCI2000 state variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the desired state variable\\
+\hline
+{\em value} & The value to set the state to. Values less than zero will be instead sent as zero.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Runtime/Unity\+BCI2000.\+cs\end{DoxyCompactItemize}
