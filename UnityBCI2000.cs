@@ -12,17 +12,25 @@ public class UnityBCI2000 : MonoBehaviour
     /// <summary>
     /// The path to the BCI2000 Operator module binary
     /// </summary>
-    private string OperatorPath;
+    public string OperatorPath;
     //Use of a remote operator is unsupported due to the fact that UnityBCI2000 will not be able to
     //function correctly with the amount of communication latency that would exist when using a remote operator.
     //public string TelnetIp
-    private string TelnetIp;
+    public string TelnetIp;
     //public int TelnetPort;
-    private int TelnetPort;
+    public int TelnetPort;
     /// <summary>
     /// Don't start the Source, Processing, or Application modules when starting UnityBCI2000
     /// </summary>
     public bool DontStartModules;
+    /// <summary>
+    /// Start BCI2000 run alongside the scene. 
+    /// </summary>
+    public bool StartWithScene = true;
+    /// <summary>
+    /// Shut down BCI2000 with scene.
+    /// </summary>
+    public bool ShutdownWithScene = true;
     /// <summary>
     /// The Source Module to start up
     /// </summary>
@@ -180,6 +188,60 @@ public class UnityBCI2000 : MonoBehaviour
         return 0;
     }
 
+
+    /// <summary>
+    /// Adds a parameter to BCI2000. All parameters are treated as strings.
+    /// </summary>
+    /// <param name="section">The section label for the parameter within BCI2000</param>
+    /// <param name="name">The name of the parameter</param>
+    /// <param name="defaultValue">The default value of the parameter</param>
+    /// <param name="minValue">The parameter's minimum value</param>
+    /// <param name="maxValue">The parameter's maximum value</param>
+    public void AddParam(string section, string name, string defaultValue, string minValue, string maxValue) {
+        bci.AddParameter(section, name, defaultValue, minValue, maxValue);
+    }
+
+    /// <summary>
+    /// Adds a parameter to BCI2000. All parameters are treated as strings.
+    /// </summary>
+    /// <param name="section">The section label for the parameter within BCI2000</param>
+    /// <param name="name">The name of the parameter</param>
+    /// <param name="defaultValue">The default value of the parameter</param>
+    public void AddParam(string section, string name, string defaultValue)
+    {
+        AddParam(section, name, defaultValue, null, null);
+    }
+
+    /// <summary>
+    /// Adds a parameter to BCI2000. All parameters are treated as strings.
+    /// </summary>
+    /// <param name="section">The section label for the parameter within BCI2000</param>
+    /// <param name="name">The name of the parameter</param>
+       public void AddParam(string section, string name)
+    {
+        AddParam(section, name, null);
+    }
+
+    /// <summary>
+    /// Gets a parameter value from BCI2000
+    /// </summary>
+    /// <param name="name">The name of the parameter to get</param>
+    /// <returns>The value of the parameter as a string</returns>
+    public string GetParam(string name)
+    {
+        return bci.GetParameter(name);
+    }
+
+    /// <summary>
+    /// Sets the value of a parameter
+    /// </summary>
+    /// <param name="name">The name of the parameter to set</param>
+    /// <param name="value">The value to set the parameter to</param>
+    public void SetParam(string name, string value)
+    {
+        bci.SetParameter(name, value);  
+    }
+
     private BCI2000Remote bci = new BCI2000Remote();
     private List<string> statenames = new List<string>();
     private List<string> eventnames = new List<string>();
@@ -245,8 +307,11 @@ public class UnityBCI2000 : MonoBehaviour
                 bci.AddStateVariable(state, 32, 0);
             }
 
-            bci.SetConfig();
-            bci.Start();
+            if (StartWithScene)
+            {
+                bci.SetConfig();
+                bci.Start();
+            }
             afterFirst = true;
         }
 
@@ -266,12 +331,19 @@ public class UnityBCI2000 : MonoBehaviour
     */
     private void OnDestroy()
     {
-        bci = null;
+        if (ShutdownWithScene)
+        {
+            bci = null;
+        }
     }
 
 
     private void OnApplicationQuit()
     {
-        bci.Stop();
+        if (ShutdownWithScene)
+        {
+            bci.Stop();
+        }
     }
+    
 }
