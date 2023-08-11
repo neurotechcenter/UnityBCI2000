@@ -241,7 +241,22 @@ public class UnityBCI2000 : MonoBehaviour
     {
         bci.SetParameter(name, value);  
     }
-
+    /// <summary>
+    /// Start BCI2000. Also call "SetConfig"
+    /// </summary>
+    public void StartBCI2000(){
+        bci.SetConfig();
+        bci.Start();
+    }
+    /// <summary>
+    /// Suspend BCI2000
+    /// </summary>
+    public void SuspendBCI2000()=>bci.Stop();
+    
+    /// <summary>
+    /// Resume BCI2000
+    /// </summary>
+    public void ResumeBCI2000()=>bci.Start();
     private BCI2000Remote bci = new BCI2000Remote();
     private List<string> statenames = new List<string>();
     private List<string> eventnames = new List<string>();
@@ -309,26 +324,14 @@ public class UnityBCI2000 : MonoBehaviour
 
             if (StartWithScene)
             {
-                bci.SetConfig();
-                bci.Start();
+                StartBCI2000();
             }
             afterFirst = true;
         }
 
 
     }
-    /*
-    public void StartRun()
-    {
-        bci.Start();
-    }
-    
 
-    public void StopRun()
-    {
-        bci.Stop();
-    }
-    */
     private void OnDestroy()
     {
         if (ShutdownWithScene)
