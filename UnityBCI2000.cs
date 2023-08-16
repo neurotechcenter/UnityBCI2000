@@ -24,6 +24,14 @@ public class UnityBCI2000 : MonoBehaviour
     /// If non-Unity modules take a long time to start, the connection will be terminated if this value is not adjusted.
     /// </summary>
     public int Timeout = 1000;
+    /// The number of frames to wait to start the run after connecting to BCI2000.
+    /// This is to allow time for external modules such as eye trackers to start up.
+    /// </summary>
+    public int ConnectWaitFrames = 0;
+    /// <summary>
+    /// Warn if attempting to use BCI2000 when it is in an unready state (before your ConnectWaitFrames have passed).
+    /// </summary>
+    public bool WarnUnreadyUsage = true;
     /// <summary>
     /// Don't start the Source, Processing, or Application modules when starting UnityBCI2000
     /// </summary>
@@ -113,6 +121,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// However, UnityBCI2000 does not check if the channel and element values are valid for the current BCI2000 configuration.</exception>
     public double GetSignal(int channel, int element)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return 0; }
         if (channel < 0)
         {
             throw new Exception("Channel cannot be less than 0");
@@ -131,6 +140,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="value">The value to set the state to. Values less than zero will be instead sent as zero.</param>
     public void SetState(string name, int value)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         if (afterFirst)
         {
             bci.SetStateVariable(name, (UInt32) Math.Max(value, 0)); // states cannot be negative, values will be set to zero instead
@@ -145,6 +155,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <returns>The value of the state variable</returns>
     public int GetState(string name)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return 0; }
         if (afterFirst)
         {
             return (int) bci.GetStateVariable(name);
@@ -160,6 +171,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="value">The value to set the event</param>
     public void SetEvent(string name, int value)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         if (afterFirst)
         {
             bci.SetEvent(name, (UInt32) Math.Max(value, 0));
@@ -173,6 +185,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="value">The value for the event</param>
     public void PulseEvent(string name, int value)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         if (afterFirst)
         {
             bci.PulseEvent(name, (UInt32) Math.Max(value, 0));
@@ -186,6 +199,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <returns>The current value of the event</returns>
     public int GetEvent(string eventName) 
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return 0; }
         if (afterFirst)
         {
             return bci.GetEvent(eventName);
@@ -203,6 +217,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="minValue">The parameter's minimum value</param>
     /// <param name="maxValue">The parameter's maximum value</param>
     public void AddParam(string section, string name, string defaultValue, string minValue, string maxValue) {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         bci.AddParameter(section, name, defaultValue, minValue, maxValue);
     }
 
@@ -214,6 +229,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="defaultValue">The default value of the parameter</param>
     public void AddParam(string section, string name, string defaultValue)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         AddParam(section, name, defaultValue, null, null);
     }
 
@@ -224,6 +240,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="name">The name of the parameter</param>
        public void AddParam(string section, string name)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         AddParam(section, name, null);
     }
 
@@ -234,6 +251,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <returns>The value of the parameter as a string</returns>
     public string GetParam(string name)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return ""; }
         return bci.GetParameter(name);
     }
 
@@ -244,6 +262,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="value">The value to set the parameter to</param>
     public void SetParam(string name, string value)
     {
+        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         bci.SetParameter(name, value);  
     }
 
@@ -251,8 +270,11 @@ public class UnityBCI2000 : MonoBehaviour
     private List<string> statenames = new List<string>();
     private List<string> eventnames = new List<string>();
     private bool afterFirst = false;
+    private bool ready = false;
+    private int framecount = 0;
     private Dictionary<string, List<string>> modules;
-
+    private string unreadyMessage = "Warning: attempting to communicate with BCI2000 while it is in an unready state. To silence this message, uncheck the \"WarnUnreadyUsage\" box.";
+        
     // Start is called before the first frame update
     void Start()
     {
@@ -306,26 +328,34 @@ public class UnityBCI2000 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!afterFirst) //Start and set config, so other scripts can add variables.
+        if (ready)
         {
-            foreach (string state in statenames) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
+            if (!afterFirst) //Start and set config, so other scripts can add variables.
             {
-                bci.AddStateVariable(state, 32, 0);
-            }
+                foreach (string state in statenames) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
+                {
+                    bci.AddStateVariable(state, 32, 0);
+                }
 
-            if (StartWithScene)
-            {
-                bci.SetConfig();
-                bci.Start();
+                if (StartWithScene)
+                {
+                    bci.SetConfig();
+                    bci.Start();
+                }
+                afterFirst = true;
             }
-            afterFirst = true;
+        } else
+        {
+            if(framecount >= ConnectWaitFrames)
+            {
+                ready = true;
+            }
+            framecount++;
         }
-
-
     }
-    /*
     public void StartRun()
     {
+        bci.SetConfig();
         bci.Start();
     }
     
@@ -334,7 +364,6 @@ public class UnityBCI2000 : MonoBehaviour
     {
         bci.Stop();
     }
-    */
     private void OnDestroy()
     {
         if (ShutdownWithScene)
