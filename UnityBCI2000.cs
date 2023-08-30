@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using BCI2000RemoteNET;
@@ -167,7 +168,11 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="value">The value to set the event</param>
     public void SetEvent(string name, int value)
     {
-        if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
+        if (!ready) { if (WarnUnreadyUsage) {
+                Debug.Log(unreadyMessage);
+            }
+            return; 
+        }
         if (afterFirst)
         {
             bci.SetEvent(name, (UInt32) Math.Max(value, 0));
@@ -227,17 +232,17 @@ public class UnityBCI2000 : MonoBehaviour
     {
         if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
         AddParam(section, name, defaultValue, null, null);
-    }
+            }
 
     /// <summary>
-    /// Adds a parameter to BCI2000. All parameters are treated as strings.
+    /// Adds a parameter to BCI2000. All parameters are treated as strings. Can only be called within Start(), otherwise, will not work.
     /// </summary>
     /// <param name="section">The section label for the parameter within BCI2000</param>
     /// <param name="name">The name of the parameter</param>
        public void AddParam(string section, string name)
     {
         if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
-        AddParam(section, name, null);
+        AddParam(section, name, null, null, null)
     }
 
     /// <summary>
@@ -259,7 +264,7 @@ public class UnityBCI2000 : MonoBehaviour
     public void SetParam(string name, string value)
     {
         if (!ready) { if (WarnUnreadyUsage) { Debug.Log(unreadyMessage); }  return; }
-        bci.SetParameter(name, value);  
+        bci.SetParameter(name, value);
     }
 
     private BCI2000Remote bci = new BCI2000Remote();
@@ -312,7 +317,10 @@ public class UnityBCI2000 : MonoBehaviour
             {Module2, module2ArgsList },
             {Module3, module3ArgsList }
             });
+            bci.WaitForSystemState("Connected");
         }
+
+        
 
         foreach (string paramfile in parameterFiles) {
             bci.LoadParameters(paramfile);
@@ -348,10 +356,33 @@ public class UnityBCI2000 : MonoBehaviour
             framecount++;
         }
     }
+
+    public void ExecuteCommand(string command)
+    {
+        bci.SimpleCommand(command);
+    }
+
     public void StartRun()
     {
         bci.SetConfig();
         bci.Start();
+    }
+
+    /// <summary>
+    /// Starts a run, but sleeps the thread between setting config and starting, in order to allow time for components to start up
+    /// THIS WILL BLOCK FOR THE GIVEN TIME!
+    /// </summary>
+    /// <param name="sleepMs"Amount of time to sleep the thread></param>
+    public void StartRunSleepThread(int sleepMs)
+    {
+        for (int i = 0; i < cmdQueue.Count; i++)
+        {
+            ExecuteCommand(cmdQueue.Dequeue());
+        }
+        bci.SetConfig();
+        Thread.Sleep(sleepMs);
+        bci.Start();
+
     }
     
 
