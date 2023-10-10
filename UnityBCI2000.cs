@@ -301,8 +301,6 @@ public class UnityBCI2000 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ready)
-        {
             if (!afterFirst) //Start and set config, so other scripts can add variables.
             {
                 foreach (string state in statenames) //Add all states to BCI2000. these can't be added before or after BCI2000 starts, and must be added here.
@@ -312,23 +310,11 @@ public class UnityBCI2000 : MonoBehaviour
 
                 if (StartWithScene)
                 {
-                    for (int i = 0; i < cmdQueue.Count; i++)
-                    {
-                        ExecuteCommand(cmdQueue.Dequeue());
-                    }
                     bci.SetConfig();
                     bci.Start();
                 }
                 afterFirst = true;
             }
-        } else
-        {
-            if(framecount >= ConnectWaitFrames)
-            {
-                ready = true;
-            }
-            framecount++;
-        }
     }
 
     public void ExecuteCommand(string command)
@@ -338,10 +324,6 @@ public class UnityBCI2000 : MonoBehaviour
 
     public void StartRun()
     {
-        for (int i = 0; i < cmdQueue.Count; i++)
-        {
-            ExecuteCommand(cmdQueue.Dequeue());
-        }
         bci.SetConfig();
         bci.Start();
     }
