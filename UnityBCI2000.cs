@@ -109,15 +109,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// However, UnityBCI2000 does not check if the channel and element values are valid for the current BCI2000 configuration.</exception>
     public double GetSignal(int channel, int element)
     {
-        if (channel < 1)
-        {
-            throw new Exception("Channel cannot be less than 1");
-        }
-        if (element < 1)
-        {
-            throw new Exception("Element cannot be less than 1");
-        }
-        return bci.GetSignal((uint) channel, (uint) element);
+        return bci.GetSignal(channel, element);
     }
     
     /// <summary>
