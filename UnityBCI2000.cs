@@ -317,7 +317,6 @@ public class UnityBCI2000 : MonoBehaviour
                         ExecuteCommand(cmdQueue.Dequeue());
                     }
                     bci.SetConfig();
-                    bci.WaitForSystemState("Suspended");
                     bci.Start();
                 }
                 afterFirst = true;
@@ -344,7 +343,6 @@ public class UnityBCI2000 : MonoBehaviour
             ExecuteCommand(cmdQueue.Dequeue());
         }
         bci.SetConfig();
-        bci.WaitForSystemState("Suspended");
         bci.Start();
     }
 
