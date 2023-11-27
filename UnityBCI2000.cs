@@ -95,12 +95,29 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds an event to BCI2000. This must be called within the `Start()` method of a `MonoBehaviour` to work properly
+    /// Adds an event to BCI2000 with bit width 32. This must be called within the `Start()` method of a `MonoBehaviour` to work properly
     /// </summary>
     /// <param name="name"></param>
     public void AddEvent(string name)
     {
-        eventnames.Add(name);
+        eventnames.Add((name, 32));
+    }
+
+
+    /// <summary>
+    /// Adds an event to BCI2000 with bit width given by width
+    /// </summary>
+    /// <param name="name">The parameter name</param>
+    /// <param name="width">The parameter bit width. Must be within range 1..32</param>
+    /// <exception cref="Exception">Width must be between 1 and 32.</exception>
+    public void AddEvent(string name, uint width)
+    {
+        if (width < 1 || width > 32)
+        {
+            throw new Exception($"Event {name} has width {width} which is outside the range 0..32");
+        }
+
+        eventnames.Add((name, width));   
     }
 
     /// <summary>
@@ -241,7 +258,7 @@ public class UnityBCI2000 : MonoBehaviour
 
     private BCI2000Remote bci = new BCI2000Remote();
     private List<string> statenames = new List<string>();
-    private List<string> eventnames = new List<string>();
+    private List<(string, uint)> eventnames = new List<(string, uint)>();
     private Queue<string> paramCmds = new Queue<string>();
     private bool afterFirst = false;
     private Dictionary<string, List<string>> modules;
