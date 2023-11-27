@@ -1,0 +1,171 @@
+\doxysection{BCI2000\+Remote\+NET.\+BCI2000\+Remote Class Reference}
+\hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote}{}\label{classBCI2000RemoteNET_1_1BCI2000Remote}\index{BCI2000RemoteNET.BCI2000Remote@{BCI2000RemoteNET.BCI2000Remote}}
+Inheritance diagram for BCI2000\+Remote\+NET.\+BCI2000\+Remote\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classBCI2000RemoteNET_1_1BCI2000Remote}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_ae1e81150e93f73b26d57686addee980f}\label{classBCI2000RemoteNET_1_1BCI2000Remote_ae1e81150e93f73b26d57686addee980f} 
+bool {\bfseries Connect} (string\mbox{[}$\,$\mbox{]} init\+Commands, string\mbox{[}$\,$\mbox{]} event\+Names)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a049c56ad2daf542b19edee8bbadb5d1c}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a049c56ad2daf542b19edee8bbadb5d1c} 
+bool {\bfseries Connect} (string\mbox{[}$\,$\mbox{]} init\+Commands)
+\item 
+override bool \mbox{\hyperlink{classBCI2000RemoteNET_1_1BCI2000Remote_a08ee55302951702eb6934a4a9051c5c8}{Connect}} ()
+\item 
+bool \mbox{\hyperlink{classBCI2000RemoteNET_1_1BCI2000Remote_ad8ced3ab6306f59c6df03d216f9c1cea}{Startup\+Modules}} (Dictionary$<$ string, List$<$ string $>$ $>$ modules)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a757a28eca4cf3898616781528770a55f}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a757a28eca4cf3898616781528770a55f} 
+bool {\bfseries Set\+Config} ()
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a56dc91356eeb8f8d720caf165228ce28}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a56dc91356eeb8f8d720caf165228ce28} 
+void {\bfseries Start} ()
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a961baf58023d6267e2a8c2f89164fe78}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a961baf58023d6267e2a8c2f89164fe78} 
+void {\bfseries Stop} ()
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a1f5fcceabf782a856aa5772a177df336}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a1f5fcceabf782a856aa5772a177df336} 
+void {\bfseries Set\+Parameter} (string name, string value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a387f64cac3a8d0858c4ba7a204a9ec9f}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a387f64cac3a8d0858c4ba7a204a9ec9f} 
+string {\bfseries Get\+Parameter} (string name)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a4b90424cbd280f414957ab3fd9c9884a}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a4b90424cbd280f414957ab3fd9c9884a} 
+void {\bfseries Load\+Parameters} (string filename)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a32654dac3e74e7b6e685618c637dfc39}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a32654dac3e74e7b6e685618c637dfc39} 
+void {\bfseries Add\+Parameter} (string section, string name, string default\+Value, string min\+Value, string max\+Value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_afd96581d5fb7a0e62087643b8b543637}\label{classBCI2000RemoteNET_1_1BCI2000Remote_afd96581d5fb7a0e62087643b8b543637} 
+void {\bfseries Add\+State\+Variable} (string name, UInt32 bit\+Width, double initial\+Value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a55a7b95625596ad327fa9c01b24b12a3}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a55a7b95625596ad327fa9c01b24b12a3} 
+void {\bfseries Set\+State\+Variable} (string name, double value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_ae75742100304bb886840802343db8bfc}\label{classBCI2000RemoteNET_1_1BCI2000Remote_ae75742100304bb886840802343db8bfc} 
+double {\bfseries Get\+State\+Variable} (string name)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a91b0f7abbe82fc34eaa2c8fce4d98721}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a91b0f7abbe82fc34eaa2c8fce4d98721} 
+void {\bfseries Add\+Event} (string name, UInt32 bit\+Width, UInt32 initial\+Value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a625ee3aa8c92fc34e3a85e688ae19d30}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a625ee3aa8c92fc34e3a85e688ae19d30} 
+void {\bfseries Set\+Event} (string name, UInt32 value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a50cc8835ef7a9628c7245341c4fb8572}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a50cc8835ef7a9628c7245341c4fb8572} 
+void {\bfseries Pulse\+Event} (string name, UInt32 value)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a793e38c06addf3895d4249b7003964ba}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a793e38c06addf3895d4249b7003964ba} 
+int {\bfseries Get\+Event} (string name)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a51a14424a5606160eb4b3372d033671e}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a51a14424a5606160eb4b3372d033671e} 
+double {\bfseries Get\+Signal} (uint channel, uint element)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a5f1c21f823d9594ca1596bb46a82b00f}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a5f1c21f823d9594ca1596bb46a82b00f} 
+void {\bfseries Wait\+For\+System\+State} (string state)
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_accc73ff8872ae04ec09bbaed350e8187}\label{classBCI2000RemoteNET_1_1BCI2000Remote_accc73ff8872ae04ec09bbaed350e8187} 
+string {\bfseries Get\+System\+State} ()
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a9f3209a9d57836ca6f1303837f3ba40c}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a9f3209a9d57836ca6f1303837f3ba40c} 
+void {\bfseries Simple\+Command} (string command)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classBCI2000RemoteNET_1_1BCI2000Connection}{BCI2000\+Remote\+NET.\+BCI2000\+Connection}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Disconnect} ()
+\item 
+void {\bfseries Wait\+For\+Connected} ()
+\item 
+bool {\bfseries Execute} (string command)
+\item 
+bool {\bfseries Execute} (string command, ref int out\+Code)
+\item 
+bool \mbox{\hyperlink{classBCI2000RemoteNET_1_1BCI2000Connection_a2372dc3fb402e7cc79dc094ab084b7be}{Process\+Response}} (ref int out\+Code)
+\begin{DoxyCompactList}\small\item\em Processes the response from BCI2000. Response will be set to the last line of received data that is not a prompt character. \end{DoxyCompactList}\item 
+bool {\bfseries Connected} ()
+\item 
+bool {\bfseries Quit} ()
+\item 
+virtual bool {\bfseries On\+Input} ()
+\item 
+virtual bool {\bfseries On\+Output} (string output)
+\item 
+void {\bfseries Write\+Log} (string to\+Log)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a31cc56bee362d3bc87a3cd71f8a23fd4}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a31cc56bee362d3bc87a3cd71f8a23fd4} 
+string {\bfseries Subject\+ID}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a468ac12e7ae33c5167f42af8a825ef4a}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a468ac12e7ae33c5167f42af8a825ef4a} 
+string {\bfseries Session\+ID}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a58f047992dc909a53bb4df7b2cf40f15}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a58f047992dc909a53bb4df7b2cf40f15} 
+string {\bfseries Data\+Directory}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_ad4aafd45c1a5240ba1a92138aebac873}\label{classBCI2000RemoteNET_1_1BCI2000Remote_ad4aafd45c1a5240ba1a92138aebac873} 
+bool {\bfseries Stop\+On\+Quit}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_ad00ca7edc347a5bf1d58cc1656cd89db}\label{classBCI2000RemoteNET_1_1BCI2000Remote_ad00ca7edc347a5bf1d58cc1656cd89db} 
+bool {\bfseries Disconnect\+On\+Quit}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{classBCI2000RemoteNET_1_1BCI2000Connection}{BCI2000\+Remote\+NET.\+BCI2000\+Connection}}}
+\begin{DoxyCompactItemize}
+\item 
+string {\bfseries Log\+File}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Stream\+Writer {\bfseries Log}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+bool {\bfseries Log\+States}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+bool {\bfseries Log\+Prompts}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+int {\bfseries Timeout}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string {\bfseries Telnet\+Ip}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Int32 {\bfseries Telnet\+Port}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string {\bfseries Operator\+Path}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string {\bfseries Result}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\item 
+string {\bfseries Sending}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+string {\bfseries Received}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+string {\bfseries Response}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\item 
+string {\bfseries Window\+Title}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+int {\bfseries Window\+Visible}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_a08ee55302951702eb6934a4a9051c5c8}\label{classBCI2000RemoteNET_1_1BCI2000Remote_a08ee55302951702eb6934a4a9051c5c8} 
+\index{BCI2000RemoteNET.BCI2000Remote@{BCI2000RemoteNET.BCI2000Remote}!Connect@{Connect}}
+\index{Connect@{Connect}!BCI2000RemoteNET.BCI2000Remote@{BCI2000RemoteNET.BCI2000Remote}}
+\doxysubsubsection{\texorpdfstring{Connect()}{Connect()}}
+{\footnotesize\ttfamily override bool BCI2000\+Remote\+NET.\+BCI2000\+Remote.\+Connect (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classBCI2000RemoteNET_1_1BCI2000Connection}{BCI2000\+Remote\+NET.\+BCI2000\+Connection}}.
+
+\Hypertarget{classBCI2000RemoteNET_1_1BCI2000Remote_ad8ced3ab6306f59c6df03d216f9c1cea}\label{classBCI2000RemoteNET_1_1BCI2000Remote_ad8ced3ab6306f59c6df03d216f9c1cea} 
+\index{BCI2000RemoteNET.BCI2000Remote@{BCI2000RemoteNET.BCI2000Remote}!StartupModules@{StartupModules}}
+\index{StartupModules@{StartupModules}!BCI2000RemoteNET.BCI2000Remote@{BCI2000RemoteNET.BCI2000Remote}}
+\doxysubsubsection{\texorpdfstring{StartupModules()}{StartupModules()}}
+{\footnotesize\ttfamily bool BCI2000\+Remote\+NET.\+BCI2000\+Remote.\+Startup\+Modules (\begin{DoxyParamCaption}\item[{Dictionary$<$ string, List$<$ string $>$ $>$}]{modules }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+takes module and arguments in the form of a dictionary with the keys being module names and value being a list of arguments uses lists and dictionary because parsing strings is annoying pass null as a value for no arguments other than --local arguments don\textquotesingle{}t need "{}-\/-\/"{} in front, and whitespace is removed 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+BCI2000\+Remote\+NET/BCI2000\+Remote.\+cs\end{DoxyCompactItemize}
