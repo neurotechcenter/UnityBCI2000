@@ -108,9 +108,9 @@ public class UnityBCI2000 : MonoBehaviour
     /// Adds an event to BCI2000 with bit width given by width
     /// </summary>
     /// <param name="name">The parameter name</param>
-    /// <param name="width">The parameter bit width. Must be within range 1..32</param>
+    /// <param name="width">The parameter bit width. Must be within range 1..32, default 32</param>
     /// <exception cref="Exception">Width must be between 1 and 32.</exception>
-    public void AddEvent(string name, uint width)
+    public void AddEvent(string name, uint width = 32)
     {
         if (width < 1 || width > 32)
         {
@@ -212,7 +212,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="minValue">The parameter's minimum value</param>
     /// <param name="maxValue">The parameter's maximum value</param>
     public void AddParam(string section, string name, string defaultValue, string minValue, string maxValue) {
-        paramCmds.Enqueue("add parameter " + section + " " + name + " " + defaultValue + " " + minValue + " " + maxValue);
+        paramCmds.Enqueue("add parameter " + section + " string " + name + "= " + defaultValue + " " + defaultValue + " " + minValue + " " + maxValue);
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="defaultValue">The default value of the parameter</param>
     public void AddParam(string section, string name, string defaultValue)
     {
-        paramCmds.Enqueue("add parameter " + section + " " + name + " " + defaultValue + " % %");
+        paramCmds.Enqueue("add parameter " + section + " string " + name + "= " + defaultValue + " " + defaultValue + " % %");
     }
 
     /// <summary>
@@ -233,7 +233,8 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="name">The name of the parameter</param>
        public void AddParam(string section, string name)
     {
-        paramCmds.Enqueue("Add parameter " + section + " " + name + " % % %");
+        Debug.Log("Add parameter " + section + " string " + name + "= % % % %");
+        paramCmds.Enqueue("Add parameter " + section + " string " + name + "= % % % %");
     }
 
     /// <summary>
@@ -260,8 +261,11 @@ public class UnityBCI2000 : MonoBehaviour
     private List<string> statenames = new List<string>();
     private List<(string, uint)> eventnames = new List<(string, uint)>();
     private Queue<string> paramCmds = new Queue<string>();
+    private Queue<string> cmds = new Queue<string>();
     private bool afterFirst = false;
     private Dictionary<string, List<string>> modules;
+    //Is set to true on first Update();
+    private bool isStarted = false;
         
     // Start is called before the first frame update
     void Start()
@@ -313,7 +317,11 @@ public class UnityBCI2000 : MonoBehaviour
             bci.LoadParameters(paramfile);
         }
 
-
+        foreach (string cmd in cmds)
+        {
+            bci.SimpleCommand(cmd);
+        }
+        isStarted = true;
     }
     // Update is called once per frame
     void Update()
@@ -334,9 +342,22 @@ public class UnityBCI2000 : MonoBehaviour
             }
     }
 
-    public void ExecuteCommand(string command)
+    /// <summary>
+    /// Executes a BCI2000 operator script command. If called before BCI2000's modules connect, 
+    /// the command will be sent after the modules initialize. 
+    /// </summary>
+    /// <param name="command">The command to send</param>
+    /// <param name="now">Execute the command now, regardless of if the modules have connected. This will not work for most commands.</param>
+    public void ExecuteCommand(string command, bool now = false)
     {
-        bci.SimpleCommand(command);
+        if (!isStarted && !now)
+        {
+            cmds.Enqueue(command);
+        }
+        else
+        {
+            bci.SimpleCommand(command);
+        }
     }
 
     public void StartRun()
