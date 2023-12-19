@@ -257,6 +257,25 @@ public class UnityBCI2000 : MonoBehaviour
         paramCmds.Enqueue("set parameter " + name + " " + value);
     }
 
+    /// <summary>
+    /// Executes a BCI2000 operator script command, information for which can be found <see href="https://www.bci2000.org/mediawiki/index.php/Technical_Reference:Operator_Library">here.</see>
+    /// If called before BCI2000's modules connect, the command will be sent after the modules initialize. This is to prevent sending of commands while the operator is not ready, as the operator's usual response to being sent an unwanted command is to shut down communication entirely.
+    /// Most things can be done with this command, other than those which must be done while the operator is in idle state, such as adding events or parameters. Use <see cref="AddEvent">AddEvent</see> and <see cref="AddParam">AddParam</see> instead.
+    /// </summary>
+    /// <param name="command">The command to send</param>
+    /// <param name="now">Execute the command now, regardless of if the operator is ready. This will not work for most commands.</param>
+    public void ExecuteCommand(string command, bool now = false)
+    {
+        if (!isStarted && !now)
+        {
+            cmds.Enqueue(command);
+        }
+        else
+        {
+            bci.SimpleCommand(command);
+        }
+    }
+
     private BCI2000Remote bci = new BCI2000Remote();
     private List<string> statenames = new List<string>();
     private List<(string, uint)> eventnames = new List<(string, uint)>();
@@ -342,23 +361,6 @@ public class UnityBCI2000 : MonoBehaviour
             }
     }
 
-    /// <summary>
-    /// Executes a BCI2000 operator script command. If called before BCI2000's modules connect, 
-    /// the command will be sent after the modules initialize. 
-    /// </summary>
-    /// <param name="command">The command to send</param>
-    /// <param name="now">Execute the command now, regardless of if the modules have connected. This will not work for most commands.</param>
-    public void ExecuteCommand(string command, bool now = false)
-    {
-        if (!isStarted && !now)
-        {
-            cmds.Enqueue(command);
-        }
-        else
-        {
-            bci.SimpleCommand(command);
-        }
-    }
 
     public void StartRun()
     {
