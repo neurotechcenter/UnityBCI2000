@@ -340,6 +340,11 @@ public class UnityBCI2000 : MonoBehaviour
         {
             bci.SimpleCommand(cmd);
         }
+
+        foreach (string c in paramCmds)
+        {
+            bci.SimpleCommand(c);
+        }
         isStarted = true;
     }
     // Update is called once per frame
