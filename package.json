@@ -1,6 +1,6 @@
 {
 	"name":"org.bci2000.unitybci2000",
-	"version":"0.1.0",
+	"version":"0.3.1",
 	"description":"Package which integrates BCI2000 with Unity",
 	"displayName":"BCI2000",
 	"unity":"2020.3",

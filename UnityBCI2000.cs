@@ -212,7 +212,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="minValue">The parameter's minimum value</param>
     /// <param name="maxValue">The parameter's maximum value</param>
     public void AddParam(string section, string name, string defaultValue, string minValue, string maxValue) {
-        paramCmds.Enqueue("add parameter " + section + " string " + name + "= " + defaultValue + " " + defaultValue + " " + minValue + " " + maxValue);
+        paramAddCmds.Enqueue("add parameter " + section + " string " + name + "= " + defaultValue + " " + defaultValue + " " + minValue + " " + maxValue);
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <param name="defaultValue">The default value of the parameter</param>
     public void AddParam(string section, string name, string defaultValue)
     {
-        paramCmds.Enqueue("add parameter " + section + " string " + name + "= " + defaultValue + " " + defaultValue + " % %");
+        paramAddCmds.Enqueue("add parameter " + section + " string " + name + "= " + defaultValue + " " + defaultValue + " % %");
     }
 
     /// <summary>
@@ -283,6 +283,7 @@ public class UnityBCI2000 : MonoBehaviour
     private Queue<string> cmds = new Queue<string>();
     private bool afterFirst = false;
     private Dictionary<string, List<string>> modules;
+    private Queue<string> paramAddCmds = new Queue<string>();
     //Is set to true on first Update();
     private bool isStarted = false;
         
@@ -302,7 +303,10 @@ public class UnityBCI2000 : MonoBehaviour
         bci.LogStates = LogStates;
         bci.LogPrompts = LogPrompts;
 
-        bci.Connect(InitCommands, eventnames.ToArray());
+        List<string> initCmdsWithParams = new List<string>(InitCommands);
+        initCmdsWithParams.AddRange(paramAddCmds);
+
+        bci.Connect(initCmdsWithParams.ToArray(), eventnames.ToArray());
 
         List<string> module1ArgsList;
         if (Module1Args.Length == 0)
