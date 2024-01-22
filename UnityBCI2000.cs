@@ -68,7 +68,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <summary>
     /// The file to store log output
     /// </summary>
-    public string LogFile;
+    public string LogFile = "BCI2000Log.txt";
     /// <summary>
     /// Log state variable changes
     /// </summary>
