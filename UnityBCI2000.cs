@@ -87,6 +87,7 @@ public class UnityBCI2000 : MonoBehaviour
     /// <summary>
     /// Adds a state to BCI2000. This must be called within the Start() method of a MonoBehviour to work properly.
     /// The added state has a bit width of 32 and initial state of 0.
+    /// Must be called from Awake()
     /// </summary>
     /// <param name="name">The name of the state to add</param>
     public void AddState(string name) 
@@ -95,7 +96,7 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds an event to BCI2000 with bit width 32. This must be called within the `Start()` method of a `MonoBehaviour` to work properly
+    /// Adds an event to BCI2000 with bit width 32. Must be called from Awake()
     /// </summary>
     /// <param name="name"></param>
     public void AddEvent(string name)
@@ -189,7 +190,7 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets the value of an event
+    /// Gets the value of an event. 
     /// </summary>
     /// <param name="eventName">The name of the desired event</param>
     /// <returns>The current value of the event</returns>
@@ -204,7 +205,7 @@ public class UnityBCI2000 : MonoBehaviour
 
 
     /// <summary>
-    /// Adds a parameter to BCI2000. All parameters are treated as strings.
+    /// Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake()
     /// </summary>
     /// <param name="section">The section label for the parameter within BCI2000</param>
     /// <param name="name">The name of the parameter</param>
@@ -216,7 +217,7 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds a parameter to BCI2000. All parameters are treated as strings.
+    /// Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake()
     /// </summary>
     /// <param name="section">The section label for the parameter within BCI2000</param>
     /// <param name="name">The name of the parameter</param>
@@ -227,7 +228,7 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds a parameter to BCI2000. All parameters are treated as strings. Can only be called within Start(), otherwise, will not work.
+    /// Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake().
     /// </summary>
     /// <param name="section">The section label for the parameter within BCI2000</param>
     /// <param name="name">The name of the parameter</param>
@@ -238,7 +239,8 @@ public class UnityBCI2000 : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets a parameter value from BCI2000
+    /// Gets a parameter value from BCI2000.
+    /// This must be used after BCI2000 startup.
     /// </summary>
     /// <param name="name">The name of the parameter to get</param>
     /// <returns>The value of the parameter as a string</returns>
