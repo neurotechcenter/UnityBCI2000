@@ -10,9 +10,9 @@ Inheritance diagram for Unity\+BCI2000\+:\begin{figure}[H]
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{classUnityBCI2000_ab20972fb9e2250ff6b82daafba24de29}{Add\+State}} (string name)
-\begin{DoxyCompactList}\small\item\em Adds a state to BCI2000. This must be called within the Start() method of a Mono\+Behviour to work properly. The added state has a bit width of 32 and initial state of 0. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Adds a state to BCI2000. This must be called within the Start() method of a Mono\+Behviour to work properly. The added state has a bit width of 32 and initial state of 0. Must be called from Awake() \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_a7b27e322eee56f2c93780f0752ef79cd}{Add\+Event}} (string name)
-\begin{DoxyCompactList}\small\item\em Adds an event to BCI2000 with bit width 32. This must be called within the {\ttfamily Start()} method of a {\ttfamily Mono\+Behaviour} to work properly \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Adds an event to BCI2000 with bit width 32. Must be called from Awake() \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_a6115ae07091f8198b6fe943bea36a27d}{Add\+Event}} (string name, uint width=32)
 \begin{DoxyCompactList}\small\item\em Adds an event to BCI2000 with bit width given by width \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classUnityBCI2000_a35000269f2941e72bad5adf531697854}{Get\+Signal}} (int channel, int element)
@@ -26,15 +26,15 @@ void \mbox{\hyperlink{classUnityBCI2000_a513c659e32ce2df57aa375b5148b0f6d}{Set\+
 void \mbox{\hyperlink{classUnityBCI2000_a938be87a4b1053853930531c886920e0}{Pulse\+Event}} (string name, int value)
 \begin{DoxyCompactList}\small\item\em Sets an event to a value for a single sample, then returns it to its previous value. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classUnityBCI2000_aa9fb50da10a393cc0decccb4287e2e5b}{Get\+Event}} (string event\+Name)
-\begin{DoxyCompactList}\small\item\em Gets the value of an event \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Gets the value of an event. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_a780e5b282cc9f4aac7678a85bf330783}{Add\+Param}} (string section, string name, string default\+Value, string min\+Value, string max\+Value)
-\begin{DoxyCompactList}\small\item\em Adds a parameter to BCI2000. All parameters are treated as strings. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake() \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_a4c793fb694589124d8d196509d771638}{Add\+Param}} (string section, string name, string default\+Value)
-\begin{DoxyCompactList}\small\item\em Adds a parameter to BCI2000. All parameters are treated as strings. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake() \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_a84d412b714b7e25edac9737268d03090}{Add\+Param}} (string section, string name)
-\begin{DoxyCompactList}\small\item\em Adds a parameter to BCI2000. All parameters are treated as strings. Can only be called within Start(), otherwise, will not work. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake(). \end{DoxyCompactList}\item 
 string \mbox{\hyperlink{classUnityBCI2000_aeec96ee7cc7dceb455f38a1c707ee976}{Get\+Param}} (string name)
-\begin{DoxyCompactList}\small\item\em Gets a parameter value from BCI2000 \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Gets a parameter value from BCI2000. This must be used after BCI2000 startup. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_aa68f720e4fd8c2818120aa31c84f1016}{Set\+Param}} (string name, string value)
 \begin{DoxyCompactList}\small\item\em Sets the value of a parameter \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classUnityBCI2000_af89e7adac7f3a58d3366d2f81438dce2}{Execute\+Command}} (string command, bool now=false)
@@ -92,7 +92,7 @@ string\mbox{[}$\,$\mbox{]} {\bfseries Module3\+Args}
 string\mbox{[}$\,$\mbox{]} {\bfseries Init\+Commands}
 \begin{DoxyCompactList}\small\item\em Commands to run immediately upon startup of BCI2000. These run before any of the modules are started. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classUnityBCI2000_af98850fa96f747035f8f89c68aa6939c}\label{classUnityBCI2000_af98850fa96f747035f8f89c68aa6939c}} 
-string {\bfseries Log\+File}
+string {\bfseries Log\+File} = \char`\"{}BCI2000\+Log.\+txt\char`\"{}
 \begin{DoxyCompactList}\small\item\em The file to store log output \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classUnityBCI2000_a890248b261ace132dee3689ed0b7e8e6}\label{classUnityBCI2000_a890248b261ace132dee3689ed0b7e8e6}} 
 bool {\bfseries Log\+States}
@@ -114,7 +114,7 @@ List$<$ string $>$ {\bfseries parameter\+Files} = new List$<$string$>$()
 
 
 
-Adds an event to BCI2000 with bit width 32. This must be called within the {\ttfamily Start()} method of a {\ttfamily Mono\+Behaviour} to work properly 
+Adds an event to BCI2000 with bit width 32. Must be called from Awake() 
 
 
 \begin{DoxyParams}{Parameters}
@@ -151,7 +151,7 @@ Adds an event to BCI2000 with bit width given by width
 
 
 
-Adds a parameter to BCI2000. All parameters are treated as strings. Can only be called within Start(), otherwise, will not work. 
+Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake(). 
 
 
 \begin{DoxyParams}{Parameters}
@@ -168,7 +168,7 @@ Adds a parameter to BCI2000. All parameters are treated as strings. Can only be 
 
 
 
-Adds a parameter to BCI2000. All parameters are treated as strings. 
+Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake() 
 
 
 \begin{DoxyParams}{Parameters}
@@ -187,7 +187,7 @@ Adds a parameter to BCI2000. All parameters are treated as strings.
 
 
 
-Adds a parameter to BCI2000. All parameters are treated as strings. 
+Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake() 
 
 
 \begin{DoxyParams}{Parameters}
@@ -210,7 +210,7 @@ Adds a parameter to BCI2000. All parameters are treated as strings.
 
 
 
-Adds a state to BCI2000. This must be called within the Start() method of a Mono\+Behviour to work properly. The added state has a bit width of 32 and initial state of 0. 
+Adds a state to BCI2000. This must be called within the Start() method of a Mono\+Behviour to work properly. The added state has a bit width of 32 and initial state of 0. Must be called from Awake() 
 
 
 \begin{DoxyParams}{Parameters}
@@ -244,7 +244,7 @@ If called before BCI2000\textquotesingle{}s modules connect, the command will be
 
 
 
-Gets the value of an event 
+Gets the value of an event. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -262,7 +262,7 @@ The current value of the event
 
 
 
-Gets a parameter value from BCI2000 
+Gets a parameter value from BCI2000. This must be used after BCI2000 startup. 
 
 
 \begin{DoxyParams}{Parameters}

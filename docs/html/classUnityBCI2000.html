@@ -79,10 +79,10 @@ Inheritance diagram for UnityBCI2000:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab20972fb9e2250ff6b82daafba24de29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#ab20972fb9e2250ff6b82daafba24de29">AddState</a> (string name)</td></tr>
-<tr class="memdesc:ab20972fb9e2250ff6b82daafba24de29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a state to BCI2000. This must be called within the Start() method of a MonoBehviour to work properly. The added state has a bit width of 32 and initial state of 0.  <a href="classUnityBCI2000.html#ab20972fb9e2250ff6b82daafba24de29">More...</a><br /></td></tr>
+<tr class="memdesc:ab20972fb9e2250ff6b82daafba24de29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a state to BCI2000. This must be called within the Start() method of a MonoBehviour to work properly. The added state has a bit width of 32 and initial state of 0. Must be called from Awake()  <a href="classUnityBCI2000.html#ab20972fb9e2250ff6b82daafba24de29">More...</a><br /></td></tr>
 <tr class="separator:ab20972fb9e2250ff6b82daafba24de29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b27e322eee56f2c93780f0752ef79cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#a7b27e322eee56f2c93780f0752ef79cd">AddEvent</a> (string name)</td></tr>
-<tr class="memdesc:a7b27e322eee56f2c93780f0752ef79cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an event to BCI2000 with bit width 32. This must be called within the <code>Start()</code> method of a <code>MonoBehaviour</code> to work properly  <a href="classUnityBCI2000.html#a7b27e322eee56f2c93780f0752ef79cd">More...</a><br /></td></tr>
+<tr class="memdesc:a7b27e322eee56f2c93780f0752ef79cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an event to BCI2000 with bit width 32. Must be called from Awake()  <a href="classUnityBCI2000.html#a7b27e322eee56f2c93780f0752ef79cd">More...</a><br /></td></tr>
 <tr class="separator:a7b27e322eee56f2c93780f0752ef79cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6115ae07091f8198b6fe943bea36a27d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#a6115ae07091f8198b6fe943bea36a27d">AddEvent</a> (string name, uint width=32)</td></tr>
 <tr class="memdesc:a6115ae07091f8198b6fe943bea36a27d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an event to BCI2000 with bit width given by width  <a href="classUnityBCI2000.html#a6115ae07091f8198b6fe943bea36a27d">More...</a><br /></td></tr>
@@ -103,19 +103,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a938be87a4b1053853930531c886920e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an event to a value for a single sample, then returns it to its previous value.  <a href="classUnityBCI2000.html#a938be87a4b1053853930531c886920e0">More...</a><br /></td></tr>
 <tr class="separator:a938be87a4b1053853930531c886920e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9fb50da10a393cc0decccb4287e2e5b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#aa9fb50da10a393cc0decccb4287e2e5b">GetEvent</a> (string eventName)</td></tr>
-<tr class="memdesc:aa9fb50da10a393cc0decccb4287e2e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value of an event  <a href="classUnityBCI2000.html#aa9fb50da10a393cc0decccb4287e2e5b">More...</a><br /></td></tr>
+<tr class="memdesc:aa9fb50da10a393cc0decccb4287e2e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value of an event.  <a href="classUnityBCI2000.html#aa9fb50da10a393cc0decccb4287e2e5b">More...</a><br /></td></tr>
 <tr class="separator:aa9fb50da10a393cc0decccb4287e2e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a780e5b282cc9f4aac7678a85bf330783"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#a780e5b282cc9f4aac7678a85bf330783">AddParam</a> (string section, string name, string defaultValue, string minValue, string maxValue)</td></tr>
-<tr class="memdesc:a780e5b282cc9f4aac7678a85bf330783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a parameter to BCI2000. All parameters are treated as strings.  <a href="classUnityBCI2000.html#a780e5b282cc9f4aac7678a85bf330783">More...</a><br /></td></tr>
+<tr class="memdesc:a780e5b282cc9f4aac7678a85bf330783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake()  <a href="classUnityBCI2000.html#a780e5b282cc9f4aac7678a85bf330783">More...</a><br /></td></tr>
 <tr class="separator:a780e5b282cc9f4aac7678a85bf330783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c793fb694589124d8d196509d771638"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#a4c793fb694589124d8d196509d771638">AddParam</a> (string section, string name, string defaultValue)</td></tr>
-<tr class="memdesc:a4c793fb694589124d8d196509d771638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a parameter to BCI2000. All parameters are treated as strings.  <a href="classUnityBCI2000.html#a4c793fb694589124d8d196509d771638">More...</a><br /></td></tr>
+<tr class="memdesc:a4c793fb694589124d8d196509d771638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake()  <a href="classUnityBCI2000.html#a4c793fb694589124d8d196509d771638">More...</a><br /></td></tr>
 <tr class="separator:a4c793fb694589124d8d196509d771638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84d412b714b7e25edac9737268d03090"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#a84d412b714b7e25edac9737268d03090">AddParam</a> (string section, string name)</td></tr>
-<tr class="memdesc:a84d412b714b7e25edac9737268d03090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a parameter to BCI2000. All parameters are treated as strings. Can only be called within Start(), otherwise, will not work.  <a href="classUnityBCI2000.html#a84d412b714b7e25edac9737268d03090">More...</a><br /></td></tr>
+<tr class="memdesc:a84d412b714b7e25edac9737268d03090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake().  <a href="classUnityBCI2000.html#a84d412b714b7e25edac9737268d03090">More...</a><br /></td></tr>
 <tr class="separator:a84d412b714b7e25edac9737268d03090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeec96ee7cc7dceb455f38a1c707ee976"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#aeec96ee7cc7dceb455f38a1c707ee976">GetParam</a> (string name)</td></tr>
-<tr class="memdesc:aeec96ee7cc7dceb455f38a1c707ee976"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a parameter value from BCI2000  <a href="classUnityBCI2000.html#aeec96ee7cc7dceb455f38a1c707ee976">More...</a><br /></td></tr>
+<tr class="memdesc:aeec96ee7cc7dceb455f38a1c707ee976"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a parameter value from BCI2000. This must be used after BCI2000 startup.  <a href="classUnityBCI2000.html#aeec96ee7cc7dceb455f38a1c707ee976">More...</a><br /></td></tr>
 <tr class="separator:aeec96ee7cc7dceb455f38a1c707ee976"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa68f720e4fd8c2818120aa31c84f1016"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnityBCI2000.html#aa68f720e4fd8c2818120aa31c84f1016">SetParam</a> (string name, string value)</td></tr>
 <tr class="memdesc:aa68f720e4fd8c2818120aa31c84f1016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of a parameter  <a href="classUnityBCI2000.html#aa68f720e4fd8c2818120aa31c84f1016">More...</a><br /></td></tr>
@@ -185,7 +185,7 @@ string[]&#160;</td><td class="memItemRight" valign="bottom"><b>InitCommands</b><
 <tr class="memdesc:aa1043606f55b80ddd6c8d9cf6558974d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commands to run immediately upon startup of BCI2000. These run before any of the modules are started. <br /></td></tr>
 <tr class="separator:aa1043606f55b80ddd6c8d9cf6558974d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af98850fa96f747035f8f89c68aa6939c"><td class="memItemLeft" align="right" valign="top"><a id="af98850fa96f747035f8f89c68aa6939c" name="af98850fa96f747035f8f89c68aa6939c"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>LogFile</b></td></tr>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>LogFile</b> = &quot;BCI2000Log.txt&quot;</td></tr>
 <tr class="memdesc:af98850fa96f747035f8f89c68aa6939c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file to store log output <br /></td></tr>
 <tr class="separator:af98850fa96f747035f8f89c68aa6939c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a890248b261ace132dee3689ed0b7e8e6"><td class="memItemLeft" align="right" valign="top"><a id="a890248b261ace132dee3689ed0b7e8e6" name="a890248b261ace132dee3689ed0b7e8e6"></a>
@@ -226,7 +226,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Adds an event to BCI2000 with bit width 32. This must be called within the <code>Start()</code> method of a <code>MonoBehaviour</code> to work properly </p>
+<p>Adds an event to BCI2000 with bit width 32. Must be called from Awake() </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
@@ -321,7 +321,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Adds a parameter to BCI2000. All parameters are treated as strings. Can only be called within Start(), otherwise, will not work. </p>
+<p>Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake(). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">section</td><td>The section label for the parameter within BCI2000</td></tr>
@@ -372,7 +372,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Adds a parameter to BCI2000. All parameters are treated as strings. </p>
+<p>Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake() </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">section</td><td>The section label for the parameter within BCI2000</td></tr>
@@ -436,7 +436,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Adds a parameter to BCI2000. All parameters are treated as strings. </p>
+<p>Adds a parameter to BCI2000. All parameters are treated as strings. Must be called from Awake() </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">section</td><td>The section label for the parameter within BCI2000</td></tr>
@@ -474,7 +474,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Adds a state to BCI2000. This must be called within the Start() method of a MonoBehviour to work properly. The added state has a bit width of 32 and initial state of 0. </p>
+<p>Adds a state to BCI2000. This must be called within the Start() method of a MonoBehviour to work properly. The added state has a bit width of 32 and initial state of 0. Must be called from Awake() </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the state to add</td></tr>
@@ -553,7 +553,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Gets the value of an event </p>
+<p>Gets the value of an event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">eventName</td><td>The name of the desired event</td></tr>
@@ -588,7 +588,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>param
 </table>
 </div><div class="memdoc">
 
-<p>Gets a parameter value from BCI2000 </p>
+<p>Gets a parameter value from BCI2000. This must be used after BCI2000 startup. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the parameter to get</td></tr>
