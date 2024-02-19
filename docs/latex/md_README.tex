@@ -1,9 +1,0 @@
-Unity package which integrates BCI2000\hypertarget{md_README_autotoc_md22}{}\doxysection{Dependencies}\label{md_README_autotoc_md22}
-\mbox{\hyperlink{classUnityBCI2000}{Unity\+BCI2000}} depends on the BCI2000\+Remote\+NET library, located at \href{https://github.com/neurotechcenter/BCI2000RemoteNET}{\texttt{ Git\+Hub}} or \href{https://www.nuget.org/packages/BCI2000RemoteNET}{\texttt{ Nu\+Get}}. Keep in mind that at the moment both BCI2000\+Remote\+NET and \mbox{\hyperlink{classUnityBCI2000}{Unity\+BCI2000}} are not fully released, and are still in development, so features and API structure are subject to change at any time, and bugs are to be expected.\hypertarget{md_README_autotoc_md23}{}\doxysection{Description}\label{md_README_autotoc_md23}
-BCI2000 is a set of programs for brain and brain-\/computer interface research. ~\newline
- \mbox{\hyperlink{classUnityBCI2000}{Unity\+BCI2000}} provides an interface througn which one can control and interact with BCI2000 from a Unity application.\hypertarget{md_README_autotoc_md24}{}\doxysection{Usage}\label{md_README_autotoc_md24}
-Add the {\ttfamily Unity\+BCI2000.\+cs} script to one {\ttfamily Game\+Object}. This is the central script which communicates with BCI2000. ~\newline
- Before starting, you must set the operator and modules to start up, by specifying the fields {\ttfamily Operator\+Path} and {\ttfamily Module\mbox{[}1-\/3\mbox{]}}. All other properties have default settings and will function without change. ~\newline
- If you also have modules started within a running BCI2000 instance, set {\ttfamily Dont\+Start\+Modules} to {\ttfamily true}, this will preserve your running modules.
-
-Within the {\ttfamily Start()} methods of your scripts, add states and events to \mbox{\hyperlink{classUnityBCI2000}{Unity\+BCI2000}}. You can now access BCI2000\textquotesingle{}s states and events using the included methods of the \mbox{\hyperlink{classUnityBCI2000}{Unity\+BCI2000}} object. 

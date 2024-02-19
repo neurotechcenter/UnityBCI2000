@@ -6,5 +6,5 @@ var searchData=
   ['conveying_20modified_20source_20versions_3',['5. Conveying Modified Source Versions.',['../md_LICENSE.html#autotoc_md8',1,'']]],
   ['conveying_20non_20source_20forms_4',['6. Conveying Non-Source Forms.',['../md_LICENSE.html#autotoc_md9',1,'']]],
   ['conveying_20verbatim_20copies_5',['4. Conveying Verbatim Copies.',['../md_LICENSE.html#autotoc_md7',1,'']]],
-  ['copies_6',['copies',['../md_LICENSE.html#autotoc_md7',1,'4. Conveying Verbatim Copies.'],['../md_LICENSE.html#autotoc_md12',1,'9. Acceptance Not Required for Having Copies.']]]
+  ['copies_6',['Copies',['../md_LICENSE.html#autotoc_md7',1,'4. Conveying Verbatim Copies.'],['../md_LICENSE.html#autotoc_md12',1,'9. Acceptance Not Required for Having Copies.']]]
 ];

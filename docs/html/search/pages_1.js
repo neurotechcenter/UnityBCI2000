@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unitybci2000_0',['UnityBCI2000',['../md_README.html',1,'']]]
+  ['license_0',['GNU GENERAL PUBLIC LICENSE',['../md_LICENSE.html',1,'']]]
 ];

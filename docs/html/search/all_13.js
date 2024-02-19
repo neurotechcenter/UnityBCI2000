@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['modified_20source_20versions_0',['5. Conveying Modified Source Versions.',['../md_LICENSE.html#autotoc_md8',1,'']]],
-  ['module1_1',['Module1',['../classUnityBCI2000.html#a6b042ddfa217e1ee24f58491c003d1fe',1,'UnityBCI2000']]],
-  ['module1args_2',['Module1Args',['../classUnityBCI2000.html#a6e973422ab130572f2d3eb7f55b0e52c',1,'UnityBCI2000']]],
-  ['module2_3',['Module2',['../classUnityBCI2000.html#a816918db57ecf65f04a6e3de64a7d85f',1,'UnityBCI2000']]],
-  ['module2args_4',['Module2Args',['../classUnityBCI2000.html#a1a46af5e9ffaac50378084aec0f7ac60',1,'UnityBCI2000']]],
-  ['module3_5',['Module3',['../classUnityBCI2000.html#a9fe34565f694ae24be4f8bd2121dd563',1,'UnityBCI2000']]],
-  ['module3args_6',['Module3Args',['../classUnityBCI2000.html#aaa3e5707fabaa44f8b295f75872ab4fe',1,'UnityBCI2000']]]
+  ['law_0',['3. Protecting Users&apos; Legal Rights From Anti-Circumvention Law.',['../md_LICENSE.html#autotoc_md6',1,'']]],
+  ['legal_20rights_20from_20anti_20circumvention_20law_1',['3. Protecting Users&apos; Legal Rights From Anti-Circumvention Law.',['../md_LICENSE.html#autotoc_md6',1,'']]],
+  ['liability_2',['16. Limitation of Liability.',['../md_LICENSE.html#autotoc_md19',1,'']]],
+  ['license_3',['License',['../md_LICENSE.html#autotoc_md16',1,'13. Use with the GNU Affero General Public License.'],['../md_LICENSE.html#autotoc_md17',1,'14. Revised Versions of this License.']]],
+  ['license_4',['GNU GENERAL PUBLIC LICENSE',['../md_LICENSE.html',1,'']]],
+  ['licensing_20of_20downstream_20recipients_5',['10. Automatic Licensing of Downstream Recipients.',['../md_LICENSE.html#autotoc_md13',1,'']]],
+  ['limitation_20of_20liability_6',['16. Limitation of Liability.',['../md_LICENSE.html#autotoc_md19',1,'']]],
+  ['logfile_7',['LogFile',['../classUnityBCI2000.html#af98850fa96f747035f8f89c68aa6939c',1,'UnityBCI2000']]],
+  ['logoutput_8',['LogOutput',['../classUnityBCI2000.html#af26a0a3526396ced1757c76495030f1e',1,'UnityBCI2000']]],
+  ['logprompts_9',['LogPrompts',['../classUnityBCI2000.html#a1ab8de62d0ce8b8704a89f823eb7a9b4',1,'UnityBCI2000']]],
+  ['logstates_10',['LogStates',['../classUnityBCI2000.html#a890248b261ace132dee3689ed0b7e8e6',1,'UnityBCI2000']]]
 ];

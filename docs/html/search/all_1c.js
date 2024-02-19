@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['warranty_0',['15. Disclaimer of Warranty.',['../md_LICENSE.html#autotoc_md18',1,'']]],
-  ['with_20the_20gnu_20affero_20general_20public_20license_1',['13. Use with the GNU Affero General Public License.',['../md_LICENSE.html#autotoc_md16',1,'']]]
+  ['verbatim_20copies_0',['4. Conveying Verbatim Copies.',['../md_LICENSE.html#autotoc_md7',1,'']]],
+  ['versions_1',['5. Conveying Modified Source Versions.',['../md_LICENSE.html#autotoc_md8',1,'']]],
+  ['versions_20of_20this_20license_2',['14. Revised Versions of this License.',['../md_LICENSE.html#autotoc_md17',1,'']]]
 ];

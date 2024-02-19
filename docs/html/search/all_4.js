@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['initcommands_0',['InitCommands',['../classUnityBCI2000.html#aa1043606f55b80ddd6c8d9cf6558974d',1,'UnityBCI2000']]]
+  ['4_20conveying_20verbatim_20copies_0',['4. Conveying Verbatim Copies.',['../md_LICENSE.html#autotoc_md7',1,'']]]
 ];

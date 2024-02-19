@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['executecommand_0',['ExecuteCommand',['../classUnityBCI2000.html#af89e7adac7f3a58d3366d2f81438dce2',1,'UnityBCI2000']]]
+  ['2_20basic_20permissions_0',['2. Basic Permissions.',['../md_LICENSE.html#autotoc_md5',1,'']]]
 ];

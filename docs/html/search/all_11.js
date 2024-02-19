@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initcommands_0',['InitCommands',['../classUnityBCI2000.html#aa1043606f55b80ddd6c8d9cf6558974d',1,'UnityBCI2000']]],
-  ['interpretation_20of_20sections_2015_20and_2016_1',['17. Interpretation of Sections 15 and 16.',['../md_LICENSE.html#autotoc_md20',1,'']]]
+  ['having_20copies_0',['9. Acceptance Not Required for Having Copies.',['../md_LICENSE.html#autotoc_md12',1,'']]],
+  ['how_20to_20apply_20these_20terms_20to_20your_20new_20programs_1',['How to Apply These Terms to Your New Programs',['../md_LICENSE.html#autotoc_md21',1,'']]]
 ];
