@@ -1,4 +1,7 @@
 using BCI2000RemoteNET;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class UnityBCI2000 : MonoBehaviour {
 
@@ -11,7 +14,7 @@ public class UnityBCI2000 : MonoBehaviour {
     ///This property cannot be accessed during scene initialization. In order to run BCI2000 commands during scene startup, use either <c>OnIdle</c> to run BCI2000 commands before its modules have started (for adding events, parameters, etc.), or <c>OnConnected</c> to run commands after modules have initialized. (If StartModules is set to false then OnIdle and OnConnected will be equivalent, they will both run during the <c>Start()</c> method.)
     ///</summary>
     public BCI2000Remote Control {
-	private set;
+        private set { control = value; } 
 	get {
 	    if (!initialized) {
 		throw new Exception("Cannot directly run BCI2000 commands during scene initialization. If you wish to run a BCI2000 command, use OnIdle and OnConnected to run commands before or after BCI2000's modules have started");
@@ -98,7 +101,7 @@ public class UnityBCI2000 : MonoBehaviour {
     ///Similar to <c>OnIdle</c>, but runs after BCI2000 modules have started. Can be used for setting parameters defined by modules. If <c>StartModules</c> is set to false, this is equivalent to <c>OnIdle</c>
     ///</summary>
     ///<param name="action"><c>Action<BCI2000Remote></c> which will be invoked immediately after modules are started within the <c>Start()</c> method.
-    public void OnIdle(Action<BCI2000Remote> action) {
+    public void OnConnected(Action<BCI2000Remote> action) {
 	if (awake_finished) {
 	    throw new Exception("Attempted to call OnConnected() outside of Awake(). OnIdle() must be called inside Awake()");
 	}
@@ -131,14 +134,14 @@ public class UnityBCI2000 : MonoBehaviour {
     public void StartupModules() {
 	control.StartupModules(new Dictionary<string, List<string>>()
 	{
-	    {Module1, module1ArgsList },
-	    {Module2, module2ArgsList },
-	    {Module3, module3ArgsList }
+	    {Module1, Module1Args },
+	    {Module2, Module2Args },
+	    {Module3, Module3Args }
 	});
     }
 
     void Awake(){
-	Control = new BCI2000Remote(new BCI2000Connection));
+	Control = new BCI2000Remote(new BCI2000Connection());
 	if (StartLocalOperator) {
 	    control.connection.StartOperator(OperatorPath, OperatorAddress, OperatorPort);
 	}
