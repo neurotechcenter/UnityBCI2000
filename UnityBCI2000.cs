@@ -132,7 +132,7 @@ public class UnityBCI2000 : MonoBehaviour {
 
 
     public void StartupModules() {
-	control.StartupModules(new Dictionary<string, List<string>>()
+	control.StartupModules(new Dictionary<string, IEnumerable<string>>()
 	{
 	    {Module1, Module1Args },
 	    {Module2, Module2Args },
@@ -159,7 +159,7 @@ public class UnityBCI2000 : MonoBehaviour {
 	if (StartModules) {
 	    StartupModules();
 	}
-	control.WaitForSystemState(SystemState.Connected);
+	control.WaitForSystemState(BCI2000Remote.SystemState.Connected);
 	foreach(Action<BCI2000Remote> action in onConnected) {
 	    action(control);
 	}
@@ -174,7 +174,7 @@ public class UnityBCI2000 : MonoBehaviour {
 	    control.Stop();
 	}
 	if (ShutdownWithScene) {
-	    control.Quit();
+	    control.connection.Quit();
 	}
     }
 
