@@ -158,8 +158,8 @@ public class UnityBCI2000 : MonoBehaviour {
 	}
 	if (StartModules) {
 	    StartupModules();
+	    control.WaitForSystemState(BCI2000Remote.SystemState.Connected);
 	}
-	control.WaitForSystemState(BCI2000Remote.SystemState.Connected);
 	foreach(Action<BCI2000Remote> action in onConnected) {
 	    action(control);
 	}
