@@ -146,9 +146,6 @@ public class UnityBCI2000 : MonoBehaviour {
 	    control.connection.StartOperator(OperatorPath, OperatorAddress, OperatorPort);
 	}
 	control.connection.Connect(OperatorAddress, OperatorPort);
-	foreach(string file in ParameterFiles) {
-	    control.LoadParameters(file);
-	}
     }
 
     void Start() {
@@ -159,6 +156,9 @@ public class UnityBCI2000 : MonoBehaviour {
 	if (StartModules) {
 	    StartupModules();
 	    control.WaitForSystemState(BCI2000Remote.SystemState.Connected);
+	}
+	foreach(string file in ParameterFiles) {
+	    control.LoadParameters(file);
 	}
 	foreach(Action<BCI2000Remote> action in onConnected) {
 	    action(control);
