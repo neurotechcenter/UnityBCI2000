@@ -1,5 +1,6 @@
 using BCI2000RemoteNET;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -119,6 +120,21 @@ public class UnityBCI2000 : MonoBehaviour {
 	}
     }
 
+    private uint lastSrcTime = uint.MaxValue;
+    private float lastBlockTime = -1;
+    private float sampleTime = 0;
+    ///<summary>
+    ///Gets the offset into the current block such that the sample was taken exactly one block length ago, for use with GetSignal or GetEvent. This is a bit of a workaround because of how BCI2000 processes data in discrete blocks. Therefore this method must be used carefully. It sends multiple commands to the operator and thus should only be used in a low latency environment, that is, when running on the same machine as the operator. If used, it should be called continuously within an Update() method.
+    ///</summary>
+    public int CurrentSampleOffset() {
+	uint srcTime = control.GetState("SourceTime");
+	if (srcTime != lastSrcTime) {
+	    lastSrcTime = srcTime;
+	    lastBlockTime = Time.time;
+	    sampleTime = 1 / float.Parse(control.GetParameter("SamplingRate"));
+	}
+	return (int) Math.Floor((Time.time - lastBlockTime) / sampleTime);
+    }
 
 
     public string Module1 = "SignalGenerator";
