@@ -109,6 +109,15 @@ public class UnityBCI2000 : MonoBehaviour {
     }
 
 
+    ///<summary>
+    ///Waits for BCI2000 to be in the specified state. Similar to <c>BCI2000Remote.WaitForSystemState</c>, but is a non-blocking Unity coroutine.
+    ///</summary>
+    ///<param name="state">The <c>BCI2000Remote.SystemState</c> to wait for </param>
+    public IEnumerator PollSystemState(BCI2000Remote.SystemState state) {
+	while (Control.GetSystemState() != state) {
+	    yield return null;
+	}
+    }
 
 
 
