@@ -18,7 +18,7 @@ public class UnityBCI2000 : MonoBehaviour {
         private set { control = value; } 
 	get {
 	    if (!initialized) {
-		throw new Exception("Cannot directly run BCI2000 commands during scene initialization. If you wish to run a BCI2000 command, use OnIdle and OnConnected to run commands before or after BCI2000's modules have started");
+		throw new Exception("Cannot directly run BCI2000 commands during scene initialization. If you wish to run a BCI2000 command, use OnIdle and OnConnected to run commands before or after BCI2000's modules have started. If you have set InitializeWithScene to false, call Initialize before this.");
 	    } else {
 		return control;
 	    }
@@ -56,6 +56,13 @@ public class UnityBCI2000 : MonoBehaviour {
     ///If you wish to control BCI2000 initialization manually, such as if your scene starts with a button press rather than automatically, <c>OnIdle</c> and <c>OnConnected</c> will likely not function as they do when starting BCI2000 automatically. In this case it would be more appropriate to control BCI2000 directly via <c>Control</c>.
     /// </summary>
     public bool StartModules = true;
+
+
+    /// <summary>
+    /// Initialize BCI2000 automatically when the scene loads. This includes starting modules, loading parameter files, and running the OnIdle and OnConnected tasks. If false, BCI2000 will be in Idle mode until <c>Initialize()</c> is called manually. Set to false if you wish to set parameters outside Awake(), and plan on initializing BCI2000 afterwards.
+    /// Note that calling Initialize will still respect <c>StartModules</c>, so if you want to start modules while calling <c>Initialize()</c>, set this to false but set <c>StartModules</c> to true.
+    /// </summary>
+    public bool InitializeWithScene = true;
 
     /// <summary>
     ///Start collecting data when the scene starts. If you want to start BCI2000 manually instead, call <c>Control.Start()</c> 
@@ -174,6 +181,22 @@ public class UnityBCI2000 : MonoBehaviour {
     }
 
     void Start() {
+	if (InitializeWithScene) {
+	    Initialize();
+	}
+	if (StartWithScene) {
+	    control.Start();
+	}
+    }
+    
+
+    ///<summary>
+    ///Initializes BCI2000, bringing it from its initial Idle state to its configuration state. This includes running the onIdle commands, starting the BCI2000 modules based on the settings in the editor, loading the parameter files, and running the onConnected commands. Calling this manually is only necessary if parameters need to be set outside of Awake, for example, setting the SubjectName based on text input.
+    ///</summary>
+    public void Initialize() {
+	if (initialized) {
+	    throw new Exception("Attempted to call Initialize() more than once. Initialize can only be called once. Check that InitializeWithScene is not set.");
+	}
 	awake_finished = true;
 	foreach (Action<BCI2000Remote> action in onIdle) {
 	    action(control);
@@ -189,9 +212,6 @@ public class UnityBCI2000 : MonoBehaviour {
 	    action(control);
 	}
 	initialized = true;
-	if (StartWithScene) {
-	    control.Start();
-	}
     }
 
     void OnApplicationQuit() {
