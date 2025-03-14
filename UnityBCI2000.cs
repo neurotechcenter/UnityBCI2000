@@ -50,6 +50,11 @@ public class UnityBCI2000 : MonoBehaviour {
     /// </summary>
     public int ConnectTimeout = 1000; 
 
+    /// <summary> 
+    /// Amount of time to delay after starting the operator to connect. Keep in mind that this will block the main thread. Increase if starting BCI2000 is slow on your machine, causing connection problems.
+    /// </summary>
+    public float WaitBeforeConnecting = 0;
+
     /// <summary>
     ///Start modules automatically when the scene loads. Set to false if you want to start modules manually, and call either <c>Control.StartupModules()</c> with the required arguments, or this object's <c>StartupModules()</c> method, which starts up modules according to the parameters set in the Unity inspector.
     ///Note on manual control of BCI2000 initialization:
@@ -85,6 +90,7 @@ public class UnityBCI2000 : MonoBehaviour {
     ///List of paths to parameter files to load
     /// </summary>
     public List<string> ParameterFiles;
+
 
     /// <summary>
     ///Add an action to run immediately after connecting to BCI2000, before modules have started. This is useful for adding states, events, and parameters. This must be called within <c>Awake()</c>.
@@ -177,6 +183,7 @@ public class UnityBCI2000 : MonoBehaviour {
 	if (StartLocalOperator) {
 	    control.connection.StartOperator(OperatorPath, OperatorAddress, OperatorPort);
 	}
+	System.Threading.Thread.Sleep((int) (WaitBeforeConnecting * 1000));
 	control.connection.Connect(OperatorAddress, OperatorPort);
     }
 
@@ -225,3 +232,5 @@ public class UnityBCI2000 : MonoBehaviour {
 
 
 }
+
+
